@@ -139,35 +139,35 @@ int checkpointsforturn(int place, int* throw) {
             break;
         case TWO:
             for(int i = 0; i < 5; i++) {
-                if(throw[i] == 1) {
+                if(throw[i] == 2) {
                     score+=throw[i];
                 }
             }
             break;
         case THREE:
             for(int i = 0; i < 5; i++) {
-                if(throw[i] == 1) {
+                if(throw[i] == 3) {
                     score+=throw[i];
                 }
             }
             break;
         case FOUR:
             for(int i = 0; i < 5; i++) {
-                if(throw[i] == 1) {
+                if(throw[i] == 4) {
                     score+=throw[i];
                 }
             }
             break;
         case FIVE:
             for(int i = 0; i < 5; i++) {
-                if(throw[i] == 1) {
+                if(throw[i] == 5) {
                     score+=throw[i];
                 }
             }
             break;
         case SIX:
             for(int i = 0; i < 5; i++) {
-                if(throw[i] == 1) {
+                if(throw[i] == 6) {
                     score+=throw[i];
                 }
             }
@@ -267,13 +267,15 @@ int checkpointsforturn(int place, int* throw) {
         case KNIFFEL:
             for(int i = 1; i < 4; i++) {
                 if(throw[i] != throw[4]) {
+                    score = 0;
                     break;
+                } else {
+                    score = 50;
                 }
             }
-            score = 50;
             break;
         case CHANCE:
-            for(int i = 1; i < 5; i++) {
+            for(int i = 0; i < 5; i++) {
                 score += throw[i];
             }
     }
@@ -353,51 +355,63 @@ int checkinput(char* input, Sheet* playersheet) {
 }
 
 void findemptyrows(Sheet playersheet, int* throw) {
+    char* score;
     if(playersheet.ones == 0) {
         score = convertscoretotext(checkpointsforturn(ONE, throw));
         printf("Einser: %s\n",score);
     }
     if(playersheet.twos == 0) {
-        printf("Zweier\n");
+        score = convertscoretotext(checkpointsforturn(TWO, throw));
+        printf("Zweier: %s\n",score);
     }
     if(playersheet.threes == 0) {
-        printf("Dreier\n");
+        score = convertscoretotext(checkpointsforturn(THREE, throw));
+        printf("Dreier: %s\n",score);
     }
     if(playersheet.fours == 0) {
-        printf("Vierer\n");
+        score = convertscoretotext(checkpointsforturn(FOUR, throw));
+        printf("Vierer: %s\n",score);
     }
     if(playersheet.fives == 0) {
-        printf("Fünfer\n");
+        score = convertscoretotext(checkpointsforturn(FIVE, throw));
+        printf("Fünfer: %s\n",score);
     }
     if(playersheet.sixes == 0) {
-        printf("Sechser\n");
+        score = convertscoretotext(checkpointsforturn(SIX, throw));
+        printf("Sechser: %s\n",score);
     }
     if(playersheet.threesome == 0) {
-        printf("Dreierpasch\n");
+        score = convertscoretotext(checkpointsforturn(THREESOME, throw));
+        printf("Dreierpasch: %s\n",score);
     }
     if(playersheet.foursome == 0) {
-        printf("Viererpasch\n");
+        score = convertscoretotext(checkpointsforturn(FOURSOME, throw));
+        printf("Viererpasch: %s\n",score);
     }
     if(playersheet.fullhouse == 0) {
-        printf("Full House\n");
+        score = convertscoretotext(checkpointsforturn(FULLHOUSE, throw));
+        printf("Full House: %s\n",score);
     }
     if(playersheet.littlestreet == 0) {
-        printf("Kleine Straße\n");
+        score = convertscoretotext(checkpointsforturn(LITTLESTREET, throw));
+        printf("Kleine Straße: %s\n",score);
     }
     if(playersheet.bigstreet == 0) {
-        printf("Große Straße\n");
+        score = convertscoretotext(checkpointsforturn(BIGSTREET, throw));
+        printf("Große Straße: %s\n",score);
     }
     if(playersheet.kniffel == 0) {
-        printf("Kniffel\n");
+        score = convertscoretotext(checkpointsforturn(KNIFFEL, throw));
+        printf("Kniffel: %s\n",score);
     }
     if(playersheet.chance == 0) {
-        printf("Chance\n");
+        score = convertscoretotext(checkpointsforturn(CHANCE, throw));
+        printf("Chance: %s\n",score);
     }
 }
 
 char* convertscoretotext(int score) {
-
-    char* zahl = malloc(sizeof(char) * 3);
+    char* zahl = malloc(sizeof(char) * 10);
 
     if(score == 0) {
         return "offen";
@@ -413,12 +427,12 @@ int dicethrow() {
     return (rand() % 6) + 1; 
 }
 
-int findsmallestnumberindex(int* list) {
-    int smallestnumber = list[0];
+int findsmallestnumberindex(int* listofnumbers) {
+    int smallestnumber = listofnumbers[0];
     int smallestnumberindex = 0;
-    for(int i = 1; i < sizeof(list) / sizeof(int); ) {
-        if(list[i] < smallestnumber) {
-            smallestnumber = list[i];
+    for(int i = 1; i < 5; i++) {
+        if(listofnumbers[i] < smallestnumber) {
+            smallestnumber = listofnumbers[i];
             smallestnumberindex = i;
         }
     }
