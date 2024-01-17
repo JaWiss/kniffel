@@ -27,11 +27,12 @@ Sheet* registerplayers(int*);
 char* convertscoretotext(int score);
 void turn(Sheet* playersheet);
 int dicethrow();
-void findemptyrows(Sheet playersheet);
+void findemptyrows(Sheet playersheet, int* throw);
 int checkinput(char* input, Sheet* playersheet);
 int findsmallestnumberindex(int* list);
 
 int main(int argc, char *argv[]) {
+    printf("HALOSOGODA");
     Sheet* listofsheets;
     int numberofplayers;
     
@@ -107,11 +108,11 @@ void turn(Sheet* playersheet) {
         }
         if(strcmp(input, "e") == 0) {
             printf("Gib an in welche Zeile du etwas eintragen willst. Das sind deine möglichen, offenen Zeilen:\n");
-            findemptyrows(*playersheet);
+            findemptyrows(*playersheet, throw);
         }
         if(strcmp(input, "s") == 0) {
             printf("Gebe an welche Zeile du streichen willst. Das sind deine offenen Zeilen:\n");
-            findemptyrows(*playersheet);
+            findemptyrows(*playersheet, throw);
             while(1) {
                 scanf("%s",input);
                 int entrytobechanged = checkinput(input, &playersheet);
@@ -351,9 +352,10 @@ int checkinput(char* input, Sheet* playersheet) {
     return -1;
 }
 
-void findemptyrows(Sheet playersheet) {
+void findemptyrows(Sheet playersheet, int* throw) {
     if(playersheet.ones == 0) {
-        printf("Einser\n");
+        score = convertscoretotext(checkpointsforturn(ONE, throw));
+        printf("Einser: %s\n",score);
     }
     if(playersheet.twos == 0) {
         printf("Zweier\n");
