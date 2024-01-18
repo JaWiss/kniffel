@@ -401,8 +401,8 @@ int checkpointsforturn(int place, int* throw) {
             }
             break;
         case KNIFFEL:
-            for(int i = 1; i < 4; i++) {
-                if(throw[i] != throw[4]) {
+            for(int i = 1; i < 5; i++) {
+                if(throw[i] != throw[0]) {
                     score = 0;
                     break;
                 } else {
