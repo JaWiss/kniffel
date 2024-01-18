@@ -30,6 +30,7 @@ int dicethrow();
 void findemptyrows(Sheet playersheet, int* throw);
 int checkinput(char* input, Sheet* playersheet);
 int findsmallestnumberindex(int* list);
+bool enterpointstosheet(Sheet* playersheet, int* throw);
 
 int main(int argc, char *argv[]) {
     printf("HALOSOGODA");
@@ -69,6 +70,7 @@ void turn(Sheet* playersheet) {
     srand(time(NULL));
     int* throw = malloc(sizeof(int)*5);
     char input[10];
+    bool hasenteredpoints = 0;
     printf("Spieler %s\n:",playersheet->playername);
     printf("    Blatt:\n");
     printf("Einser:         %s\n",convertscoretotext(playersheet->ones));
@@ -87,46 +89,134 @@ void turn(Sheet* playersheet) {
     for(int i = 0; i < 5; i++) {
         throw[i] = dicethrow();
     }
-    for(int j = 0; j < 3; j++) {
+    for(int j = 0; j < 2; j++) {
+        if(hasenteredpoints) {
+            break;
+        }
         printf("Dein Wurf:\n");
         printf(" %d, %d, %d, %d, %d\n",throw[0],throw[1],throw[2],throw[3],throw[4]);
         printf("Gebe e ein um eine Zahl einzutragen.\nGebe w ein um erneut zu würfeln.\nGebe s ein um etwas zu streichen.\n");
         while(1) {
             scanf("%s", input);
-            if(strcmp(input, "e") == 0 || strcmp(input, "w") == 0 || strcmp(input, "s") == 0) {
-
+            if(strcmp(input, "e") == 0 || strcmp(input, "w") == 0) {
                 break;
             }
             else {
-                printf("Gebe e, w oder s ein.\n");
+                printf("Gebe e oder w ein.\n");
             }
         }
         if(strcmp(input, "w") == 0) {
-            printf("Gebe  die Zahlen ein die du neu würfeln willst.\n");
-            printf("Der Wurf war: \n%d, %d, %d, %d, %d\n",throw[0],throw[1],throw[2],throw[3],throw[4]);
-
-        }
-        if(strcmp(input, "e") == 0) {
-            printf("Gib an in welche Zeile du etwas eintragen willst. Das sind deine möglichen, offenen Zeilen:\n");
-            findemptyrows(*playersheet, throw);
-        }
-        if(strcmp(input, "s") == 0) {
-            printf("Gebe an welche Zeile du streichen willst. Das sind deine offenen Zeilen:\n");
-            findemptyrows(*playersheet, throw);
+            printf("Gebe  die Würfel ein die du neu würfeln willst.\n");
+            printf("Der Wurf war: \nWÜrfel 1: %d,WÜrfel 2: %d,Würfel 3: %d,Würfel 4: %d,Würfel 5: %d\n",throw[0],throw[1],throw[2],throw[3],throw[4]);
             while(1) {
                 scanf("%s",input);
-                int entrytobechanged = checkinput(input, &playersheet);
-                int* addressofentry = &playersheet->ones;
-                if(entrytobechanged >= 0) {
-                    addressofentry += sizeof(int) * entrytobechanged;
-                } else {
-                    printf("Bitte wähle eine der möglichen Optionen aus.\n");
+                if(strlen(input) > 0) {
+                    break;
+                }
+            }
+            for(int i = 0; i < strlen(input); i++) {
+                if(input[i] == '1') {
+                    throw[0] = dicethrow();
+                }
+                if(input[i] == '2') {
+                    throw[1] = dicethrow();
+                }
+                if(input[i] == '3') {
+                    throw[2] = dicethrow();
+                }
+                if(input[i] == '4') {
+                    throw[3] = dicethrow();
+                }
+                if(input[i] == '5') {
+                    throw[4] = dicethrow();
                 }
             }
         }
+        if(strcmp(input, "e") == 0) {
+            hasenteredpoints = enterpointstosheet(playersheet, throw);
+        }
+    }
+    if(!hasenteredpoints) {
+        printf("Dein Wurf:\n");
+        printf(" %d, %d, %d, %d, %d\n",throw[0],throw[1],throw[2],throw[3],throw[4]);
+        enterpointstosheet(playersheet, throw);
     }
 }
-
+bool enterpointstosheet(Sheet* playersheet, int* throw) {
+    char input[10];
+    bool hasenteredpoints = 0;
+    printf("Gib an in welche Zeile du etwas eintragen willst. Das sind deine möglichen, offenen Zeilen:\n");
+    findemptyrows(*playersheet, throw);
+    while(1) {
+        scanf("%s", input);
+        if(strcmp(input, "e") == 0) {
+            enterpoints(ONE, throw, playersheet);
+            hasenteredpoints = 1;
+            break;
+        }
+        if(strcmp(input, "z") == 0) {
+            enterpoints(TWO, throw, playersheet);
+            hasenteredpoints = 1;
+            break;
+        }
+        if(strcmp(input, "d") == 0) {
+            enterpoints(THREE, throw, playersheet);
+            hasenteredpoints = 1;
+            break;
+        }
+        if(strcmp(input, "v") == 0) {
+            enterpoints(FOUR, throw, playersheet);
+            hasenteredpoints = 1;
+            break;
+        }
+        if(strcmp(input, "f") == 0) {
+            enterpoints(FIVE, throw, playersheet);
+            hasenteredpoints = 1;
+            break;
+        }
+        if(strcmp(input, "s") == 0) {
+            enterpoints(SIX, throw, playersheet);
+            hasenteredpoints = 1;
+            break;
+        }
+        if(strcmp(input, "dp") == 0) {
+            enterpoints(THREESOME, throw, playersheet);
+            hasenteredpoints = 1;
+            break;
+        }
+        if(strcmp(input, "vp") == 0) {
+            enterpoints(FOURSOME, throw, playersheet);
+            hasenteredpoints = 1;
+            break;
+        }
+        if(strcmp(input, "fh") == 0) {
+            enterpoints(FULLHOUSE, throw, playersheet);
+            hasenteredpoints = 1;
+            break;
+        }
+        if(strcmp(input, "ks") == 0) {
+            enterpoints(LITTLESTREET, throw, playersheet);
+            hasenteredpoints = 1;
+            break;
+        }
+        if(strcmp(input, "gs") == 0) {
+            enterpoints(BIGSTREET, throw, playersheet);
+            hasenteredpoints = 1;
+            break;
+        }
+        if(strcmp(input, "k") == 0) {
+            enterpoints(KNIFFEL, throw, playersheet);
+            hasenteredpoints = 1;
+            break;
+        }
+        if(strcmp(input, "ch") == 0) {
+            enterpoints(CHANCE, throw, playersheet);
+            hasenteredpoints = 1;
+            break;
+        }
+    }
+    return hasenteredpoints;
+}
 int checkpointsforturn(int place, int* throw) {
     int score = 0;
     switch(place) {
@@ -177,10 +267,10 @@ int checkpointsforturn(int place, int* throw) {
             bool hastwo = 0;
             int* timesofoccurence = malloc(sizeof(int)*6);
             for(int j = 0; j < 6; j++) {
-                timesofoccurence[j-1] = 0;
+                timesofoccurence[j] = 0;
             }
             for(int i = 0; i < 5; i++) {
-                timesofoccurence[i]+=1;
+                timesofoccurence[throw[i]-1]+=1;
             }
             for(int k = 0; k < 6; k++) {
                 if(timesofoccurence[k] == 3) {
@@ -198,16 +288,16 @@ int checkpointsforturn(int place, int* throw) {
             bool hasthreesome = 0;
             int* timesofoccurencethree = malloc(sizeof(int)*6);
             for(int j = 0; j < 6; j++) {
-                timesofoccurencethree[j-1] = 0;
+                timesofoccurencethree[j] = 0;
             }for(int i = 0; i < 5; i++) {
-                timesofoccurencethree[i]+=1;
+                timesofoccurencethree[throw[i]-1]+=1;
             }
             for(int k = 0; k < 6; k++) {
-                if(timesofoccurencethree[k] == 3) {
+                if(timesofoccurencethree[k] >= 3) {
                     hasthreesome = 1;
                 }
             }
-            if(hasthree) {
+            if(hasthreesome) {
                 for(int l = 0; l < 5; l++) {
                     score += throw[l];
                 }
@@ -217,13 +307,13 @@ int checkpointsforturn(int place, int* throw) {
             bool hasfoursome = 0;
             int* timesofoccurencefour = malloc(sizeof(int)*6);
             for(int j = 0; j < 6; j++) {
-                timesofoccurencefour[j-1] = 0;
+                timesofoccurencefour[j] = 0;
             }for(int i = 0; i < 5; i++) {
-                timesofoccurencefour[i]+=1;
+                timesofoccurencefour[throw[i]-1]+=1;
             }
             for(int k = 0; k < 6; k++) {
-                if(timesofoccurencefour[k] == 4) {
-                    hasthree = 1;
+                if(timesofoccurencefour[k] >= 4) {
+                    hasfoursome = 1;
                 }
             }
             if(hasfoursome) {
@@ -284,7 +374,48 @@ int checkpointsforturn(int place, int* throw) {
     }
     return score;
 }
-
+void enterpoints(int place, int* throw, Sheet* playersheet) {
+    switch(place) {
+        case ONE:
+            playersheet->ones = checkpointsforturn(place, throw);
+            break;
+        case TWO:
+            playersheet->twos = checkpointsforturn(place, throw);
+            break;
+        case THREE:
+            playersheet->threes = checkpointsforturn(place, throw);
+            break;
+        case FOUR:
+            playersheet->fours = checkpointsforturn(place, throw);
+            break;
+        case FIVE:
+            playersheet->fives = checkpointsforturn(place, throw);
+            break;
+        case SIX:
+            playersheet->sixes = checkpointsforturn(place, throw);
+            break;
+        case FULLHOUSE:
+            playersheet->fullhouse = checkpointsforturn(place, throw);
+            break;
+        case THREESOME:
+            playersheet->threesome = checkpointsforturn(place, throw);
+            break;
+        case FOURSOME:
+            playersheet->foursome = checkpointsforturn(place, throw);
+            break;
+        case LITTLESTREET:
+            playersheet->littlestreet = checkpointsforturn(place, throw);
+            break;
+        case BIGSTREET:
+            playersheet->bigstreet = checkpointsforturn(place, throw);
+            break;
+        case KNIFFEL:
+            playersheet->kniffel = checkpointsforturn(place, throw);
+            break;
+        case CHANCE:
+            playersheet->chance = checkpointsforturn(place, throw);
+    }
+}
 int checkinput(char* input, Sheet* playersheet) {
     if(strcmp(input, "Einser")) {
         if(playersheet->ones == 0) {
@@ -358,55 +489,55 @@ void findemptyrows(Sheet playersheet, int* throw) {
     char* score;
     if(playersheet.ones == 0) {
         score = convertscoretotext(checkpointsforturn(ONE, throw));
-        printf("Einser: %s\n",score);
+        printf("Einser[e]: %s\n",score);
     }
     if(playersheet.twos == 0) {
         score = convertscoretotext(checkpointsforturn(TWO, throw));
-        printf("Zweier: %s\n",score);
+        printf("Zweier[z]: %s\n",score);
     }
     if(playersheet.threes == 0) {
         score = convertscoretotext(checkpointsforturn(THREE, throw));
-        printf("Dreier: %s\n",score);
+        printf("Dreier[d]: %s\n",score);
     }
     if(playersheet.fours == 0) {
         score = convertscoretotext(checkpointsforturn(FOUR, throw));
-        printf("Vierer: %s\n",score);
+        printf("Vierer[v]: %s\n",score);
     }
     if(playersheet.fives == 0) {
         score = convertscoretotext(checkpointsforturn(FIVE, throw));
-        printf("Fünfer: %s\n",score);
+        printf("Fünfer[f]: %s\n",score);
     }
     if(playersheet.sixes == 0) {
         score = convertscoretotext(checkpointsforturn(SIX, throw));
-        printf("Sechser: %s\n",score);
+        printf("Sechser[s]: %s\n",score);
     }
     if(playersheet.threesome == 0) {
         score = convertscoretotext(checkpointsforturn(THREESOME, throw));
-        printf("Dreierpasch: %s\n",score);
+        printf("Dreierpasch[dp]: %s\n",score);
     }
     if(playersheet.foursome == 0) {
         score = convertscoretotext(checkpointsforturn(FOURSOME, throw));
-        printf("Viererpasch: %s\n",score);
+        printf("Viererpasch[vp]: %s\n",score);
     }
     if(playersheet.fullhouse == 0) {
         score = convertscoretotext(checkpointsforturn(FULLHOUSE, throw));
-        printf("Full House: %s\n",score);
+        printf("Full House[fh]: %s\n",score);
     }
     if(playersheet.littlestreet == 0) {
         score = convertscoretotext(checkpointsforturn(LITTLESTREET, throw));
-        printf("Kleine Straße: %s\n",score);
+        printf("Kleine Straße[ks]: %s\n",score);
     }
     if(playersheet.bigstreet == 0) {
         score = convertscoretotext(checkpointsforturn(BIGSTREET, throw));
-        printf("Große Straße: %s\n",score);
+        printf("Große Straße[gs]: %s\n",score);
     }
     if(playersheet.kniffel == 0) {
         score = convertscoretotext(checkpointsforturn(KNIFFEL, throw));
-        printf("Kniffel: %s\n",score);
+        printf("Kniffel[k]: %s\n",score);
     }
     if(playersheet.chance == 0) {
         score = convertscoretotext(checkpointsforturn(CHANCE, throw));
-        printf("Chance: %s\n",score);
+        printf("Chance[ch]: %s\n",score);
     }
 }
 
