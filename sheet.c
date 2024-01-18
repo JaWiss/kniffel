@@ -33,5 +33,6 @@ Sheet createSheet(char* playerName) {
     sheet.bigstreet = 0;
     sheet.kniffel = 0;
     sheet.chance = 0;
+    sheet.totalScore = 0;
     return sheet;
 }

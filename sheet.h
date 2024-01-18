@@ -15,6 +15,7 @@ typedef struct {
     int bigstreet;
     int chance;
     int kniffel;
+    int totalScore;
 }Sheet;
 
 Sheet createSheet(char* playerName);

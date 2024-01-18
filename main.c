@@ -33,7 +33,6 @@ int findsmallestnumberindex(int* list);
 bool enterpointstosheet(Sheet* playersheet, int* throw);
 
 int main(int argc, char *argv[]) {
-    printf("HALOSOGODA");
     Sheet* listofsheets;
     int numberofplayers;
     
@@ -42,6 +41,25 @@ int main(int argc, char *argv[]) {
         for(int j = 0; j < numberofplayers; j++) {
             turn(&listofsheets[j]);
         }
+    }
+    for(int k = 0; k < numberofplayers; k++) {
+        listofsheets[k].totalScore = calculatetotalscore(listofsheets[k]);
+        printf("Spieler %s\n:",listofsheets[k].playername);
+        printf("    Blatt:\n");
+        printf("Einser:         %s\n",convertscoretotext(listofsheets[k].ones));
+        printf("Zweier:         %s\n",convertscoretotext(listofsheets[k].twos));
+        printf("Dreier:         %s\n",convertscoretotext(listofsheets[k].threes));
+        printf("Vierer:         %s\n",convertscoretotext(listofsheets[k].fours));
+        printf("Fünfer:         %s\n",convertscoretotext(listofsheets[k].fives));
+        printf("Sechser:        %s\n",convertscoretotext(listofsheets[k].sixes));
+        printf("Dreierpasch:    %s\n",convertscoretotext(listofsheets[k].threesome));
+        printf("Viererpasch:    %s\n",convertscoretotext(listofsheets[k].foursome));
+        printf("Full-House:     %s\n",convertscoretotext(listofsheets[k].fullhouse));
+        printf("kleine Straße:  %s\n",convertscoretotext(listofsheets[k].littlestreet));
+        printf("große Straße:   %s\n",convertscoretotext(listofsheets[k].bigstreet));
+        printf("Kniffel:        %s\n",convertscoretotext(listofsheets[k].kniffel));
+        printf("Chance:         %s\n",convertscoretotext(listofsheets[k].chance));
+        printf("Gesamtpunktzahl:%d\n",listofsheets[k].totalScore);
     }
 }
 
@@ -66,13 +84,41 @@ Sheet* registerplayers(int* numberofplayers) {
 
 }
 
+int checkscore(int score) {
+    if(score > 0) {
+        return score;
+    }
+    return 0;
+}
+
+int calculatetotalscore(Sheet playersheet) {
+    int score = 0;
+    score += checkscore(playersheet.ones);
+    score += checkscore(playersheet.twos);
+    score += checkscore(playersheet.threes);
+    score += checkscore(playersheet.fours);
+    score += checkscore(playersheet.fives);
+    score += checkscore(playersheet.sixes);
+    if(score >= 63) {
+        score += 35;
+    }
+    score += checkscore(playersheet.threesome);
+    score += checkscore(playersheet.foursome);
+    score += checkscore(playersheet.fullhouse);
+    score += checkscore(playersheet.littlestreet);
+    score += checkscore(playersheet.bigstreet);
+    score += checkscore(playersheet.kniffel);
+    score += checkscore(playersheet.chance);
+    return score;
+}
+
 void turn(Sheet* playersheet) {
     srand(time(NULL));
     int* throw = malloc(sizeof(int)*5);
     char input[10];
     bool hasenteredpoints = 0;
-    printf("Spieler %s\n:",playersheet->playername);
-    printf("    Blatt:\n");
+    printf("Spieler %s\n",playersheet->playername);
+    printf("Blatt:\n");
     printf("Einser:         %s\n",convertscoretotext(playersheet->ones));
     printf("Zweier:         %s\n",convertscoretotext(playersheet->twos));
     printf("Dreier:         %s\n",convertscoretotext(playersheet->threes));
@@ -334,7 +380,7 @@ int checkpointsforturn(int place, int* throw) {
                     }
                 }   
             }
-            if(currentstreaklittle == 4) {
+            if(currentstreaklittle >= 4) {
                 score = 30;
             }
             break;
