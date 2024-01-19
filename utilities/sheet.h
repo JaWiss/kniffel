@@ -1,3 +1,5 @@
+#ifndef SHEET_H
+#define SHEET_H
 
 
 typedef struct {
@@ -19,3 +21,5 @@ typedef struct {
 }Sheet;
 
 Sheet createSheet(char* playerName);
+
+#endif
