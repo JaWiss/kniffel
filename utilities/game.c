@@ -67,7 +67,7 @@ void turn(Sheet* playersheet) {
         }
         if(strcmp(input, "w") == 0) {
             printf("Gebe  die Würfel ein die du neu würfeln willst.\n");
-            printf("Der Wurf war: \nWürfel 1: %d\nWürfel 2: %d\nWürfel 3: %d\nWürfel 4: %d,\nürfel 5: %d\n",dicethrow[0],dicethrow[1],dicethrow[2],dicethrow[3],dicethrow[4]);
+            printf("Der Wurf war: \nWürfel 1: %d\nWürfel 2: %d\nWürfel 3: %d\nWürfel 4: %d\nWürfel 5: %d\n",dicethrow[0],dicethrow[1],dicethrow[2],dicethrow[3],dicethrow[4]);
             while(1) {
                 scanf("%s",input);
                 if(strlen(input) > 0) {

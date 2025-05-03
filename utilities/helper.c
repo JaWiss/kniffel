@@ -29,7 +29,7 @@ char* convertscoretotext(int score) {
     if(score == -1) {
         return "gestrichen";
     }
-    char* zahl[10];
+    char* zahl = malloc(sizeof(char) * 10);
     sprintf(zahl, "%d", score);
     return zahl;
 }
