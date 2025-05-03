@@ -5,6 +5,7 @@
 
 #include "sheet.h"
 #include "helper.h"
+#include "calculations.h"
 
 #define ONE 0
 #define TWO 1
@@ -23,7 +24,7 @@
 
 void turn(Sheet* playersheet) {
     srand(time(NULL));
-    int* throw = malloc(sizeof(int)*5);
+    int* dicethrow = malloc(sizeof(int)*5);
     char input[10];
     bool hasenteredpoints = 0;
     printf("Spieler %s\n",playersheet->playername);
@@ -34,6 +35,7 @@ void turn(Sheet* playersheet) {
     printf("Vierer:         %s\n",convertscoretotext(playersheet->fours));
     printf("Fünfer:         %s\n",convertscoretotext(playersheet->fives));
     printf("Sechser:        %s\n",convertscoretotext(playersheet->sixes));
+    printf("Punktzahl oben: %s\n",calculateupperscore(*playersheet));
     printf("Dreierpasch:    %s\n",convertscoretotext(playersheet->threesome));
     printf("Viererpasch:    %s\n",convertscoretotext(playersheet->foursome));
     printf("Full-House:     %s\n",convertscoretotext(playersheet->fullhouse));
@@ -41,15 +43,17 @@ void turn(Sheet* playersheet) {
     printf("große Straße:   %s\n",convertscoretotext(playersheet->bigstreet));
     printf("Kniffel:        %s\n",convertscoretotext(playersheet->kniffel));
     printf("Chance:         %s\n",convertscoretotext(playersheet->chance));
+    printf("Punktzahl unten:%s\n",calculatelowerscore(*playersheet));
+    printf("Punktzahl Total:%s\n",calculatetotalscore(*playersheet));
     for(int i = 0; i < 5; i++) {
-        throw[i] = dicethrow();
+        dicethrow[i] = generatedicethrow();
     }
     for(int j = 0; j < 2; j++) {
         if(hasenteredpoints) {
             break;
         }
         printf("Dein Wurf:\n");
-        printf(" %d, %d, %d, %d, %d\n",throw[0],throw[1],throw[2],throw[3],throw[4]);
+        printf(" %d, %d, %d, %d, %d\n",dicethrow[0],dicethrow[1],dicethrow[2],dicethrow[3],dicethrow[4]);
         printf("Gebe e ein um eine Zahl einzutragen.\nGebe w ein um erneut zu würfeln.\nGebe s ein um etwas zu streichen.\n");
         while(1) {
             scanf("%s", input);
@@ -62,7 +66,7 @@ void turn(Sheet* playersheet) {
         }
         if(strcmp(input, "w") == 0) {
             printf("Gebe  die Würfel ein die du neu würfeln willst.\n");
-            printf("Der Wurf war: \nWÜrfel 1: %d,WÜrfel 2: %d,Würfel 3: %d,Würfel 4: %d,Würfel 5: %d\n",throw[0],throw[1],throw[2],throw[3],throw[4]);
+            printf("Der Wurf war: \nWürfel 1: %d\nWürfel 2: %d\nWürfel 3: %d\nWürfel 4: %d,\nürfel 5: %d\n",dicethrow[0],dicethrow[1],dicethrow[2],dicethrow[3],dicethrow[4]);
             while(1) {
                 scanf("%s",input);
                 if(strlen(input) > 0) {
@@ -71,74 +75,74 @@ void turn(Sheet* playersheet) {
             }
             for(int i = 0; i < strlen(input); i++) {
                 if(input[i] == '1') {
-                    throw[0] = dicethrow();
+                    dicethrow[0] = generatedicethrow();
                 }
                 if(input[i] == '2') {
-                    throw[1] = dicethrow();
+                    dicethrow[1] = generatedicethrow();
                 }
                 if(input[i] == '3') {
-                    throw[2] = dicethrow();
+                    dicethrow[2] = generatedicethrow();
                 }
                 if(input[i] == '4') {
-                    throw[3] = dicethrow();
+                    dicethrow[3] = generatedicethrow();
                 }
                 if(input[i] == '5') {
-                    throw[4] = dicethrow();
+                    dicethrow[4] = generatedicethrow();
                 }
             }
         }
         if(strcmp(input, "e") == 0) {
-            hasenteredpoints = enterpointstosheet(playersheet, throw);
+            hasenteredpoints = enterpointstosheet(playersheet, dicethrow);
         }
     }
     if(!hasenteredpoints) {
         printf("Dein Wurf:\n");
-        printf(" %d, %d, %d, %d, %d\n",throw[0],throw[1],throw[2],throw[3],throw[4]);
-        enterpointstosheet(playersheet, throw);
+        printf(" %d, %d, %d, %d, %d\n",dicethrow[0],dicethrow[1],dicethrow[2],dicethrow[3],dicethrow[4]);
+        enterpointstosheet(playersheet, dicethrow);
     }
 }
 
 
-void enterpoints(int place, int* throw, Sheet* playersheet) {
+void enterpoints(int place, int* dicethrow, Sheet* playersheet) {
     switch(place) {
         case ONE:
-            playersheet->ones = checkpointsforturn(place, throw);
+            playersheet->ones = checkpointsforturn(place, dicethrow);
             break;
         case TWO:
-            playersheet->twos = checkpointsforturn(place, throw);
+            playersheet->twos = checkpointsforturn(place, dicethrow);
             break;
         case THREE:
-            playersheet->threes = checkpointsforturn(place, throw);
+            playersheet->threes = checkpointsforturn(place, dicethrow);
             break;
         case FOUR:
-            playersheet->fours = checkpointsforturn(place, throw);
+            playersheet->fours = checkpointsforturn(place, dicethrow);
             break;
         case FIVE:
-            playersheet->fives = checkpointsforturn(place, throw);
+            playersheet->fives = checkpointsforturn(place, dicethrow);
             break;
         case SIX:
-            playersheet->sixes = checkpointsforturn(place, throw);
+            playersheet->sixes = checkpointsforturn(place, dicethrow);
             break;
         case FULLHOUSE:
-            playersheet->fullhouse = checkpointsforturn(place, throw);
+            playersheet->fullhouse = checkpointsforturn(place, dicethrow);
             break;
         case THREESOME:
-            playersheet->threesome = checkpointsforturn(place, throw);
+            playersheet->threesome = checkpointsforturn(place, dicethrow);
             break;
         case FOURSOME:
-            playersheet->foursome = checkpointsforturn(place, throw);
+            playersheet->foursome = checkpointsforturn(place, dicethrow);
             break;
         case LITTLESTREET:
-            playersheet->littlestreet = checkpointsforturn(place, throw);
+            playersheet->littlestreet = checkpointsforturn(place, dicethrow);
             break;
         case BIGSTREET:
-            playersheet->bigstreet = checkpointsforturn(place, throw);
+            playersheet->bigstreet = checkpointsforturn(place, dicethrow);
             break;
         case KNIFFEL:
-            playersheet->kniffel = checkpointsforturn(place, throw);
+            playersheet->kniffel = checkpointsforturn(place, dicethrow);
             break;
         case CHANCE:
-            playersheet->chance = checkpointsforturn(place, throw);
+            playersheet->chance = checkpointsforturn(place, dicethrow);
     }
 }
 
@@ -213,58 +217,58 @@ int checkinput(char* input, Sheet* playersheet) {
 }
 
 
-void findemptyrows(Sheet playersheet, int* throw) {
+void findemptyrows(Sheet playersheet, int* dicethrow) {
     char* score;
     if(playersheet.ones == 0) {
-        score = convertscoretotext(checkpointsforturn(ONE, throw));
+        score = convertscoretotext(checkpointsforturn(ONE, dicethrow));
         printf("Einser[e]: %s\n",score);
     }
     if(playersheet.twos == 0) {
-        score = convertscoretotext(checkpointsforturn(TWO, throw));
+        score = convertscoretotext(checkpointsforturn(TWO, dicethrow));
         printf("Zweier[z]: %s\n",score);
     }
     if(playersheet.threes == 0) {
-        score = convertscoretotext(checkpointsforturn(THREE, throw));
+        score = convertscoretotext(checkpointsforturn(THREE, dicethrow));
         printf("Dreier[d]: %s\n",score);
     }
     if(playersheet.fours == 0) {
-        score = convertscoretotext(checkpointsforturn(FOUR, throw));
+        score = convertscoretotext(checkpointsforturn(FOUR, dicethrow));
         printf("Vierer[v]: %s\n",score);
     }
     if(playersheet.fives == 0) {
-        score = convertscoretotext(checkpointsforturn(FIVE, throw));
+        score = convertscoretotext(checkpointsforturn(FIVE, dicethrow));
         printf("Fünfer[f]: %s\n",score);
     }
     if(playersheet.sixes == 0) {
-        score = convertscoretotext(checkpointsforturn(SIX, throw));
+        score = convertscoretotext(checkpointsforturn(SIX, dicethrow));
         printf("Sechser[s]: %s\n",score);
     }
     if(playersheet.threesome == 0) {
-        score = convertscoretotext(checkpointsforturn(THREESOME, throw));
+        score = convertscoretotext(checkpointsforturn(THREESOME, dicethrow));
         printf("Dreierpasch[dp]: %s\n",score);
     }
     if(playersheet.foursome == 0) {
-        score = convertscoretotext(checkpointsforturn(FOURSOME, throw));
+        score = convertscoretotext(checkpointsforturn(FOURSOME, dicethrow));
         printf("Viererpasch[vp]: %s\n",score);
     }
     if(playersheet.fullhouse == 0) {
-        score = convertscoretotext(checkpointsforturn(FULLHOUSE, throw));
+        score = convertscoretotext(checkpointsforturn(FULLHOUSE, dicethrow));
         printf("Full House[fh]: %s\n",score);
     }
     if(playersheet.littlestreet == 0) {
-        score = convertscoretotext(checkpointsforturn(LITTLESTREET, throw));
+        score = convertscoretotext(checkpointsforturn(LITTLESTREET, dicethrow));
         printf("Kleine Straße[ks]: %s\n",score);
     }
     if(playersheet.bigstreet == 0) {
-        score = convertscoretotext(checkpointsforturn(BIGSTREET, throw));
+        score = convertscoretotext(checkpointsforturn(BIGSTREET, dicethrow));
         printf("Große Straße[gs]: %s\n",score);
     }
     if(playersheet.kniffel == 0) {
-        score = convertscoretotext(checkpointsforturn(KNIFFEL, throw));
+        score = convertscoretotext(checkpointsforturn(KNIFFEL, dicethrow));
         printf("Kniffel[k]: %s\n",score);
     }
     if(playersheet.chance == 0) {
-        score = convertscoretotext(checkpointsforturn(CHANCE, throw));
+        score = convertscoretotext(checkpointsforturn(CHANCE, dicethrow));
         printf("Chance[ch]: %s\n",score);
     }
 }

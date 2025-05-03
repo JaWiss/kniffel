@@ -7,7 +7,9 @@
 
 int checkscore(int score);
 int calculatetotalscore(Sheet playersheet);
-bool enterpointstosheet(Sheet* playersheet, int* throw);
-int checkpointsforturn(int place, int* throw);
+bool enterpointstosheet(Sheet* playersheet, int* dicethrow);
+int checkpointsforturn(int place, int* dicethrow);
+int getupperscore(Sheet* playersheet);
+int getlowerscore(Sheet* playersheet);
 
 #endif

@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "sheet.h"
 #include "helper.h"
@@ -25,6 +26,32 @@ int checkscore(int score) {
     return 0;
 }
 
+int calculatelowerscore(Sheet playersheet) {
+    int score = 0;
+    score += checkscore(playersheet.threesome);
+    score += checkscore(playersheet.foursome);
+    score += checkscore(playersheet.fullhouse);
+    score += checkscore(playersheet.littlestreet);
+    score += checkscore(playersheet.bigstreet);
+    score += checkscore(playersheet.kniffel);
+    score += checkscore(playersheet.chance);
+    return score;
+}
+
+int calculateupperscore(Sheet playersheet) {
+    int score = 0;
+    score += checkscore(playersheet.ones);
+    score += checkscore(playersheet.twos);
+    score += checkscore(playersheet.threes);
+    score += checkscore(playersheet.fours);
+    score += checkscore(playersheet.fives);
+    score += checkscore(playersheet.sixes);
+    if(score >= 63) {
+        score += 35;
+    }
+    return score;
+}
+
 int calculatetotalscore(Sheet playersheet) {
     int score = 0;
     score += checkscore(playersheet.ones);
@@ -46,75 +73,75 @@ int calculatetotalscore(Sheet playersheet) {
     return score;
 }
 
-bool enterpointstosheet(Sheet* playersheet, int* throw) {
+bool enterpointstosheet(Sheet* playersheet, int* dicethrow) {
     char input[10];
     bool hasenteredpoints = 0;
     printf("Gib an in welche Zeile du etwas eintragen willst. Das sind deine möglichen, offenen Zeilen:\n");
-    findemptyrows(*playersheet, throw);
+    findemptyrows(*playersheet, dicethrow);
     while(1) {
         scanf("%s", input);
         if(strcmp(input, "e") == 0) {
-            enterpoints(ONE, throw, playersheet);
+            enterpoints(ONE, dicethrow, playersheet);
             hasenteredpoints = 1;
             break;
         }
         if(strcmp(input, "z") == 0) {
-            enterpoints(TWO, throw, playersheet);
+            enterpoints(TWO, dicethrow, playersheet);
             hasenteredpoints = 1;
             break;
         }
         if(strcmp(input, "d") == 0) {
-            enterpoints(THREE, throw, playersheet);
+            enterpoints(THREE, dicethrow, playersheet);
             hasenteredpoints = 1;
             break;
         }
         if(strcmp(input, "v") == 0) {
-            enterpoints(FOUR, throw, playersheet);
+            enterpoints(FOUR, dicethrow, playersheet);
             hasenteredpoints = 1;
             break;
         }
         if(strcmp(input, "f") == 0) {
-            enterpoints(FIVE, throw, playersheet);
+            enterpoints(FIVE, dicethrow, playersheet);
             hasenteredpoints = 1;
             break;
         }
         if(strcmp(input, "s") == 0) {
-            enterpoints(SIX, throw, playersheet);
+            enterpoints(SIX, dicethrow, playersheet);
             hasenteredpoints = 1;
             break;
         }
         if(strcmp(input, "dp") == 0) {
-            enterpoints(THREESOME, throw, playersheet);
+            enterpoints(THREESOME, dicethrow, playersheet);
             hasenteredpoints = 1;
             break;
         }
         if(strcmp(input, "vp") == 0) {
-            enterpoints(FOURSOME, throw, playersheet);
+            enterpoints(FOURSOME, dicethrow, playersheet);
             hasenteredpoints = 1;
             break;
         }
         if(strcmp(input, "fh") == 0) {
-            enterpoints(FULLHOUSE, throw, playersheet);
+            enterpoints(FULLHOUSE, dicethrow, playersheet);
             hasenteredpoints = 1;
             break;
         }
         if(strcmp(input, "ks") == 0) {
-            enterpoints(LITTLESTREET, throw, playersheet);
+            enterpoints(LITTLESTREET, dicethrow, playersheet);
             hasenteredpoints = 1;
             break;
         }
         if(strcmp(input, "gs") == 0) {
-            enterpoints(BIGSTREET, throw, playersheet);
+            enterpoints(BIGSTREET, dicethrow, playersheet);
             hasenteredpoints = 1;
             break;
         }
         if(strcmp(input, "k") == 0) {
-            enterpoints(KNIFFEL, throw, playersheet);
+            enterpoints(KNIFFEL, dicethrow, playersheet);
             hasenteredpoints = 1;
             break;
         }
         if(strcmp(input, "ch") == 0) {
-            enterpoints(CHANCE, throw, playersheet);
+            enterpoints(CHANCE, dicethrow, playersheet);
             hasenteredpoints = 1;
             break;
         }
@@ -123,48 +150,48 @@ bool enterpointstosheet(Sheet* playersheet, int* throw) {
 }
 
 
-int checkpointsforturn(int place, int* throw) {
+int checkpointsforturn(int place, int* dicethrow) {
     int score = 0;
     switch(place) {
         case ONE:
             for(int i = 0; i < 5; i++) {
-                if(throw[i] == 1) {
-                    score+=throw[i];
+                if(dicethrow[i] == 1) {
+                    score+=dicethrow[i];
                 }
             }
             break;
         case TWO:
             for(int i = 0; i < 5; i++) {
-                if(throw[i] == 2) {
-                    score+=throw[i];
+                if(dicethrow[i] == 2) {
+                    score+=dicethrow[i];
                 }
             }
             break;
         case THREE:
             for(int i = 0; i < 5; i++) {
-                if(throw[i] == 3) {
-                    score+=throw[i];
+                if(dicethrow[i] == 3) {
+                    score+=dicethrow[i];
                 }
             }
             break;
         case FOUR:
             for(int i = 0; i < 5; i++) {
-                if(throw[i] == 4) {
-                    score+=throw[i];
+                if(dicethrow[i] == 4) {
+                    score+=dicethrow[i];
                 }
             }
             break;
         case FIVE:
             for(int i = 0; i < 5; i++) {
-                if(throw[i] == 5) {
-                    score+=throw[i];
+                if(dicethrow[i] == 5) {
+                    score+=dicethrow[i];
                 }
             }
             break;
         case SIX:
             for(int i = 0; i < 5; i++) {
-                if(throw[i] == 6) {
-                    score+=throw[i];
+                if(dicethrow[i] == 6) {
+                    score+=dicethrow[i];
                 }
             }
             break;
@@ -176,7 +203,7 @@ int checkpointsforturn(int place, int* throw) {
                 timesofoccurence[j] = 0;
             }
             for(int i = 0; i < 5; i++) {
-                timesofoccurence[throw[i]-1]+=1;
+                timesofoccurence[dicethrow[i]-1]+=1;
             }
             for(int k = 0; k < 6; k++) {
                 if(timesofoccurence[k] == 3) {
@@ -196,7 +223,7 @@ int checkpointsforturn(int place, int* throw) {
             for(int j = 0; j < 6; j++) {
                 timesofoccurencethree[j] = 0;
             }for(int i = 0; i < 5; i++) {
-                timesofoccurencethree[throw[i]-1]+=1;
+                timesofoccurencethree[dicethrow[i]-1]+=1;
             }
             for(int k = 0; k < 6; k++) {
                 if(timesofoccurencethree[k] >= 3) {
@@ -205,7 +232,7 @@ int checkpointsforturn(int place, int* throw) {
             }
             if(hasthreesome) {
                 for(int l = 0; l < 5; l++) {
-                    score += throw[l];
+                    score += dicethrow[l];
                 }
             }
             break;
@@ -215,7 +242,7 @@ int checkpointsforturn(int place, int* throw) {
             for(int j = 0; j < 6; j++) {
                 timesofoccurencefour[j] = 0;
             }for(int i = 0; i < 5; i++) {
-                timesofoccurencefour[throw[i]-1]+=1;
+                timesofoccurencefour[dicethrow[i]-1]+=1;
             }
             for(int k = 0; k < 6; k++) {
                 if(timesofoccurencefour[k] >= 4) {
@@ -224,16 +251,16 @@ int checkpointsforturn(int place, int* throw) {
             }
             if(hasfoursome) {
                 for(int l = 0; l < 5; l++) {
-                    score += throw[l];
+                    score += dicethrow[l];
                 }
             }
             break;
         case LITTLESTREET:
-            int currentindexlittle = findsmallestnumberindex(throw);
+            int currentindexlittle = findsmallestnumberindex(dicethrow);
             int currentstreaklittle = 1;
             for(int i = 0; i < 4; i++) {
                 for(int j = 0; j < 5; j++) {
-                    if(throw[j] == throw[currentindexlittle] + 1) {
+                    if(dicethrow[j] == dicethrow[currentindexlittle] + 1) {
                         currentindexlittle = j;
                         currentstreaklittle++;
                         break;
@@ -245,11 +272,11 @@ int checkpointsforturn(int place, int* throw) {
             }
             break;
         case BIGSTREET:
-            int currentindexbig = findsmallestnumberindex(throw);
+            int currentindexbig = findsmallestnumberindex(dicethrow);
             int currentstreakbig = 1;
             for(int i = 0; i < 5; i++) {
                 for(int j = 0; j < 5; j++) {
-                    if(throw[j] == throw[currentindexbig] + 1) {
+                    if(dicethrow[j] == dicethrow[currentindexbig] + 1) {
                         currentindexbig = j;
                         currentstreakbig++;
                         break;
@@ -262,7 +289,7 @@ int checkpointsforturn(int place, int* throw) {
             break;
         case KNIFFEL:
             for(int i = 1; i < 5; i++) {
-                if(throw[i] != throw[0]) {
+                if(dicethrow[i] != dicethrow[0]) {
                     score = 0;
                     break;
                 } else {
@@ -272,7 +299,7 @@ int checkpointsforturn(int place, int* throw) {
             break;
         case CHANCE:
             for(int i = 0; i < 5; i++) {
-                score += throw[i];
+                score += dicethrow[i];
             }
     }
     if(score == 0) {

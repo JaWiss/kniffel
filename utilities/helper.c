@@ -1,5 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
 
-int dicethrow() {
+int generatedicethrow() {
     return (rand() % 6) + 1; 
 }
 
@@ -25,6 +27,6 @@ char* convertscoretotext(int score) {
     if(score == -1) {
         return "gestrichen";
     }
-    sprintf(zahl, "%d", score);
+    printf(zahl, "%d", score);
     return zahl;
 }
