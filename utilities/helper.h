@@ -2,9 +2,10 @@
 #define HELPER_H
 
 
-int dicethrow();
+int generatedicethrow();
 int findsmallestnumberindex(int* listofnumbers);
 char* convertscoretotext(int score);
+void initrandom();
 
 
 #endif

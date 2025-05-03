@@ -1,9 +1,11 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "sheet.h"
 #include "helper.h"
+#include "game.h"
 
 #define ONE 0
 #define TWO 1

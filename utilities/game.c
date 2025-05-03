@@ -2,6 +2,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "sheet.h"
 #include "helper.h"
@@ -35,7 +36,7 @@ void turn(Sheet* playersheet) {
     printf("Vierer:         %s\n",convertscoretotext(playersheet->fours));
     printf("Fünfer:         %s\n",convertscoretotext(playersheet->fives));
     printf("Sechser:        %s\n",convertscoretotext(playersheet->sixes));
-    printf("Punktzahl oben: %s\n",calculateupperscore(*playersheet));
+    printf("Punktzahl oben: %d\n",calculateupperscore(playersheet));
     printf("Dreierpasch:    %s\n",convertscoretotext(playersheet->threesome));
     printf("Viererpasch:    %s\n",convertscoretotext(playersheet->foursome));
     printf("Full-House:     %s\n",convertscoretotext(playersheet->fullhouse));
@@ -43,8 +44,8 @@ void turn(Sheet* playersheet) {
     printf("große Straße:   %s\n",convertscoretotext(playersheet->bigstreet));
     printf("Kniffel:        %s\n",convertscoretotext(playersheet->kniffel));
     printf("Chance:         %s\n",convertscoretotext(playersheet->chance));
-    printf("Punktzahl unten:%s\n",calculatelowerscore(*playersheet));
-    printf("Punktzahl Total:%s\n",calculatetotalscore(*playersheet));
+    printf("Punktzahl unten:%d\n",calculatelowerscore(playersheet));
+    printf("Punktzahl Total:%d\n",calculatetotalscore(*playersheet));
     for(int i = 0; i < 5; i++) {
         dicethrow[i] = generatedicethrow();
     }

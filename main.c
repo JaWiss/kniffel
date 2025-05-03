@@ -1,11 +1,7 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <argp.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include <time.h>
-
 
 #include "utilities/sheet.h"
 #include "utilities/calculations.h"
@@ -29,6 +25,7 @@
 int main(int argc, char *argv[]) {
     Sheet* listofsheets;
     int numberofplayers;
+    initrandom();
     
     listofsheets = registerplayers(&numberofplayers);
     for(int i = 0; i < 13; i++) {
@@ -38,8 +35,8 @@ int main(int argc, char *argv[]) {
     }
     for(int k = 0; k < numberofplayers; k++) {
         listofsheets[k].totalScore = calculatetotalscore(listofsheets[k]);
-        printf("Spieler %s\n:",listofsheets[k].playername);
-        printf("    Blatt:\n");
+        printf("Spieler %s:\n",listofsheets[k].playername);
+        printf("Blatt:\n");
         printf("Einser:         %s\n",convertscoretotext(listofsheets[k].ones));
         printf("Zweier:         %s\n",convertscoretotext(listofsheets[k].twos));
         printf("Dreier:         %s\n",convertscoretotext(listofsheets[k].threes));

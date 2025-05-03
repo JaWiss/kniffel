@@ -1,10 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int generatedicethrow() {
     return (rand() % 6) + 1; 
 }
 
+void initrandom() {
+    srand(time(NULL));
+}
 
 int findsmallestnumberindex(int* listofnumbers) {
     int smallestnumber = listofnumbers[0];
@@ -19,14 +23,13 @@ int findsmallestnumberindex(int* listofnumbers) {
 }
 
 char* convertscoretotext(int score) {
-    char* zahl = malloc(sizeof(char) * 10);
-
     if(score == 0) {
         return "offen";
     }
     if(score == -1) {
         return "gestrichen";
     }
-    printf(zahl, "%d", score);
+    char* zahl[10];
+    sprintf(zahl, "%d", score);
     return zahl;
 }
