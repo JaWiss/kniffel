@@ -283,9 +283,23 @@ Sheet* registerplayers(int* numberofplayers) {
     listofsheets = malloc(sizeof(Sheet)*numberof);
     for(int i = 0; i < numberof; i++) {
         char name[20];
-        printf("Wie soll Spieler %d heißen?\n", i+1);
-        scanf("%s",name);
-        listofsheets[i] = createSheet(name);
+        char status[6];
+        char isAi[2];
+        int numberOfAis = 0;
+        char numberOfAisString[3];
+        printf("Soll der Spielier ein Mensch sein? J/N");
+        scanf("%s",isAi);
+        if(strcmp(isAi, "N") == 0) {
+            strcpy(name, "COM");
+            sprintf(numberOfAisString, "%d", ++numberOfAis);
+            strcat(name, numberOfAisString);
+            strcpy(status, "COM");
+        } else {
+            printf("Wie soll Spieler %d heißen?\n", i+1);
+            scanf("%s",name);
+            strcpy(status, "Human");
+        }
+        listofsheets[i] = createSheet(name, status);
         printf("Spieler %s wurde registriert.\n", listofsheets[i].playername);
     }
     printf("Es wurden %d Spieler registriert\n", numberof);    

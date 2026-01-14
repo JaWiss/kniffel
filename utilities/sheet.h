@@ -4,6 +4,7 @@
 
 typedef struct {
     char* playername;
+    char* status;
     int ones;
     int twos;
     int threes;
@@ -20,6 +21,6 @@ typedef struct {
     int totalScore;
 }Sheet;
 
-Sheet createSheet(char* playerName);
+Sheet createSheet(char* playerName, char* status);
 
 #endif
