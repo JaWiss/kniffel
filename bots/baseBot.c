@@ -1,5 +1,6 @@
 
 #include "../utilities/sheet.h"
+#include "../utilities/calculations.h"
 
 #define ONE 0
 #define TWO 1
@@ -16,6 +17,6 @@
 #define CHANCE 12
 
 int evalDiceRoll(int diceThrow[], int rollNumber, Sheet sheet) {
-
+    
     return 0;
 }
