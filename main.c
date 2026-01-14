@@ -17,8 +17,8 @@
 #define FULLHOUSE 6
 #define THREESOME 7
 #define FOURSOME 8
-#define LITTLESTREET 9
-#define BIGSTREET 10
+#define SMALLSTRAIGHT 9
+#define BIGSTRAIGHT 10
 #define KNIFFEL 11
 #define CHANCE 12
 

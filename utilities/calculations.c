@@ -16,8 +16,8 @@
 #define FULLHOUSE 6
 #define THREESOME 7
 #define FOURSOME 8
-#define LITTLESTREET 9
-#define BIGSTREET 10
+#define SMALLSTRAIGHT 9
+#define BIGSTRAIGHT 10
 #define KNIFFEL 11
 #define CHANCE 12
 
@@ -128,12 +128,12 @@ bool enterpointstosheet(Sheet* playersheet, int* dicethrow) {
             break;
         }
         if(strcmp(input, "ks") == 0) {
-            enterpoints(LITTLESTREET, dicethrow, playersheet);
+            enterpoints(SMALLSTRAIGHT, dicethrow, playersheet);
             hasenteredpoints = 1;
             break;
         }
         if(strcmp(input, "gs") == 0) {
-            enterpoints(BIGSTREET, dicethrow, playersheet);
+            enterpoints(BIGSTRAIGHT, dicethrow, playersheet);
             hasenteredpoints = 1;
             break;
         }
@@ -257,7 +257,7 @@ int checkpointsforturn(int place, int* dicethrow) {
                 }
             }
             break;
-        case LITTLESTREET:
+        case SMALLSTRAIGHT:
             int currentindexlittle = findsmallestnumberindex(dicethrow);
             int currentstreaklittle = 1;
             for(int i = 0; i < 4; i++) {
@@ -273,7 +273,7 @@ int checkpointsforturn(int place, int* dicethrow) {
                 score = 30;
             }
             break;
-        case BIGSTREET:
+        case BIGSTRAIGHT:
             int currentindexbig = findsmallestnumberindex(dicethrow);
             int currentstreakbig = 1;
             for(int i = 0; i < 5; i++) {
@@ -308,4 +308,39 @@ int checkpointsforturn(int place, int* dicethrow) {
         score = -1;
     }
     return score;
+}
+
+int* calculateScoreForEveryField(int* dicethrow, Sheet sheet) {
+    int* scores = malloc(13 * sizeof(int)); 
+    if(sheet.ones == -1) {
+        scores[ONE] = -1;
+    } else {
+        scores[ONE] = checkpointsforturn(ONE, dicethrow);
+    }
+    if(sheet.twos == -1) {
+        scores[TWO] = -1;
+    } else {
+        scores[TWO] = checkpointsforturn(TWO, dicethrow);
+    }
+    if(sheet.threes == -1) {
+        scores[THREE] = -1;
+    } else {
+        scores[THREE] = checkpointsforturn(THREE, dicethrow);
+    }
+    if(sheet.fours == -1) {
+        scores[FOUR] = -1;
+    } else {
+        scores[FOUR] = checkpointsforturn(FOUR, dicethrow);
+    }
+    if(sheet.fives == -1) {
+        scores[FIVE] = -1;
+    } else {
+        scores[FIVE] = checkpointsforturn(FIVE, dicethrow);
+    }
+    if(sheet.sixes == -1) {
+        scores[SIX] = -1;
+    } else {
+        scores[SIX] = checkpointsforturn(SIX, dicethrow);
+    }
+    return 0;
 }
