@@ -33,8 +33,8 @@ int calculatelowerscore(Sheet playersheet) {
     score += checkscore(playersheet.threesome);
     score += checkscore(playersheet.foursome);
     score += checkscore(playersheet.fullhouse);
-    score += checkscore(playersheet.littlestreet);
-    score += checkscore(playersheet.bigstreet);
+    score += checkscore(playersheet.smallstraight);
+    score += checkscore(playersheet.bigstraight);
     score += checkscore(playersheet.kniffel);
     score += checkscore(playersheet.chance);
     return score;
@@ -68,8 +68,8 @@ int calculatetotalscore(Sheet playersheet) {
     score += checkscore(playersheet.threesome);
     score += checkscore(playersheet.foursome);
     score += checkscore(playersheet.fullhouse);
-    score += checkscore(playersheet.littlestreet);
-    score += checkscore(playersheet.bigstreet);
+    score += checkscore(playersheet.smallstraight);
+    score += checkscore(playersheet.bigstraight);
     score += checkscore(playersheet.kniffel);
     score += checkscore(playersheet.chance);
     return score;
@@ -342,5 +342,40 @@ int* calculateScoreForEveryField(int* dicethrow, Sheet sheet) {
     } else {
         scores[SIX] = checkpointsforturn(SIX, dicethrow);
     }
-    return 0;
+    if(sheet.threesome == -1) {
+        scores[THREESOME] = -1;
+    } else {
+        scores[THREESOME] = checkpointsforturn(THREESOME, dicethrow);
+    }
+    if(sheet.foursome == -1) {
+        scores[FOURSOME] = -1;
+    } else {
+        scores[FOURSOME] = checkpointsforturn(FOURSOME, dicethrow);
+    }
+    if(sheet.fullhouse == -1) {
+        scores[FULLHOUSE] = -1;
+    } else {
+        scores[FULLHOUSE] = checkpointsforturn(FULLHOUSE, dicethrow);
+    }
+    if(sheet.smallstraight == -1) {
+        scores[SMALLSTRAIGHT] = -1;
+    } else {
+        scores[SMALLSTRAIGHT] = checkpointsforturn(SMALLSTRAIGHT, dicethrow);
+    }
+    if(sheet.bigstraight == -1) {
+        scores[BIGSTRAIGHT] = -1;
+    } else {
+        scores[BIGSTRAIGHT] = checkpointsforturn(BIGSTRAIGHT, dicethrow);
+    }
+    if(sheet.kniffel == -1) {
+        scores[KNIFFEL] = -1;
+    } else {
+        scores[KNIFFEL] = checkpointsforturn(KNIFFEL, dicethrow);
+    }
+    if(sheet.chance == -1) {
+        scores[CHANCE] = -1;
+    } else {
+        scores[CHANCE] = checkpointsforturn(CHANCE, dicethrow);
+    }
+    return scores;
 }

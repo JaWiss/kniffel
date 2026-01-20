@@ -1,0 +1,2 @@
+- Wahrscheinlichkeiten für alle drei Würfe ausrechnen
+- Wahrscheinlichkeiten für schlechtere Punktzahlen errechnen und in Kalkulation mit ein beziehen(Kniffel statt 15 auf 3)

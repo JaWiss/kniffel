@@ -14,8 +14,8 @@ typedef struct {
     int fullhouse;
     int threesome;
     int foursome;
-    int littlestreet;
-    int bigstreet;
+    int smallstraight;
+    int bigstraight;
     int chance;
     int kniffel;
     int totalScore;

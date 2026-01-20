@@ -11,12 +11,13 @@
 #define FULLHOUSE 6
 #define THREESOME 7
 #define FOURSOME 8
-#define SMALLFLUSH 9
-#define BIGFLUSH 10
+#define SMALLSTRAIGHT 9
+#define BIGSTRAIGHT 10
 #define KNIFFEL 11
 #define CHANCE 12
 
-int evalDiceRoll(int diceThrow[], int rollNumber, Sheet sheet) {
+int evalDiceRoll(int* diceThrow, int rollNumber, Sheet sheet) {
+    int currentscore = calculateScoreForEveryField(diceThrow, sheet);
     
     return 0;
 }

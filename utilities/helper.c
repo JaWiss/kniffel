@@ -1,6 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
+
+#define ONE 0
+#define TWO 1
+#define THREE 2
+#define FOUR 3
+#define FIVE 4
+#define SIX 5
+#define FULLHOUSE 6
+#define THREESOME 7
+#define FOURSOME 8
+#define SMALLSTRAIGHT 9
+#define BIGSTRAIGHT 10
+#define KNIFFEL 11
+#define CHANCE 12
 
 int generatedicethrow() {
     return (rand() % 6) + 1; 
@@ -32,4 +47,44 @@ char* convertscoretotext(int score) {
     char* zahl = malloc(sizeof(char) * 10);
     sprintf(zahl, "%d", score);
     return zahl;
+}
+
+double getBaseLikelyhood(int throwCode, int points) {
+    switch (throwCode)
+    {
+    case ONE:
+        int baseLikelyhood = 1.0/6;
+        return pow(baseLikelyhood, points);
+    case TWO:
+        int baseLikelyhood = 1.0/6;
+        return pow(baseLikelyhood, points/2);
+    case THREE:
+        int baseLikelyhood = 1.0/6;
+        return pow(baseLikelyhood, points/3);
+    case FOUR:
+        int baseLikelyhood = 1.0/6;
+        return pow(baseLikelyhood, points/4); 
+    case FIVE:
+        int baseLikelyhood = 1.0/6;
+        return pow(baseLikelyhood, points/5); 
+    case SIX:
+        int baseLikelyhood = 1.0/6;
+        return pow(baseLikelyhood, points/6);
+    case THREESOME:
+        return (1.0/6) * (1.0/6);
+    case FOURSOME:
+        return (1.0/6) * (1.0/6) * (1.0/6);
+    case FULLHOUSE:
+        return (1.0/6) * (1.0/6) * (5.0/6) * (1.0/6);
+    case SMALLSTRAIGHT: 
+        return 18.0 / pow(6,5);    
+    case BIGSTRAIGHT: 
+        return 2.0 / pow(6,5);
+    case KNIFFEL:
+        return (1.0/6) * (1.0/6) * (1.0/6) * (1.0/6);
+    case CHANCE:
+        return 100.0;
+    default:
+        break;
+    }
 }
