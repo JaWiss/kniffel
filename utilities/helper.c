@@ -77,9 +77,9 @@ double getBaseLikelyhood(int throwCode, int points) {
     case FULLHOUSE:
         return (1.0/6) * (1.0/6) * (5.0/6) * (1.0/6);
     case SMALLSTRAIGHT: 
-        return 18.0 / pow(6,5);    
+        return (4.0/6 * 3.0/6 * 2.0/6 * 1.0/6) * 3;
     case BIGSTRAIGHT: 
-        return 2.0 / pow(6,5);
+        return (5.0/6 * 4.0/6 * 3.0/6 * 2.0/6 * 1.0/6) * 2;
     case KNIFFEL:
         return (1.0/6) * (1.0/6) * (1.0/6) * (1.0/6);
     case CHANCE:
