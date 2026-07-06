@@ -7,7 +7,7 @@ SRC = main.c utilities/sheet.c utilities/calculations.c utilities/helper.c utili
 OBJ = $(SRC:.c=.o)
 
 # Name of executable
-TARGET = kniffel3
+TARGET = kniffelTest
 
 # Default rule
 all: $(TARGET)

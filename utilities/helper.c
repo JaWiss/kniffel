@@ -53,38 +53,20 @@ double getBaseLikelyhood(int throwCode, int points) {
     switch (throwCode)
     {
     case ONE:
-        int baseLikelyhood = 1.0/6;
-        return pow(baseLikelyhood, points);
     case TWO:
-        int baseLikelyhood = 1.0/6;
-        return pow(baseLikelyhood, points/2);
     case THREE:
-        int baseLikelyhood = 1.0/6;
-        return pow(baseLikelyhood, points/3);
     case FOUR:
-        int baseLikelyhood = 1.0/6;
-        return pow(baseLikelyhood, points/4); 
     case FIVE:
-        int baseLikelyhood = 1.0/6;
-        return pow(baseLikelyhood, points/5); 
     case SIX:
-        int baseLikelyhood = 1.0/6;
-        return pow(baseLikelyhood, points/6);
     case THREESOME:
-        return (1.0/6) * (1.0/6);
     case FOURSOME:
-        return (1.0/6) * (1.0/6) * (1.0/6);
     case FULLHOUSE:
-        return (1.0/6) * (1.0/6) * (5.0/6) * (1.0/6);
     case SMALLSTRAIGHT: 
-        return (4.0/6 * 3.0/6 * 2.0/6 * 1.0/6) * 3;
     case BIGSTRAIGHT: 
-        return (5.0/6 * 4.0/6 * 3.0/6 * 2.0/6 * 1.0/6) * 2;
     case KNIFFEL:
-        return (1.0/6) * (1.0/6) * (1.0/6) * (1.0/6);
     case CHANCE:
-        return 100.0;
     default:
         break;
     }
+    return 0.0;
 }

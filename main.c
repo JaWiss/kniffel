@@ -46,8 +46,8 @@ int main(int argc, char *argv[]) {
         printf("Dreierpasch:    %s\n",convertscoretotext(listofsheets[k].threesome));
         printf("Viererpasch:    %s\n",convertscoretotext(listofsheets[k].foursome));
         printf("Full-House:     %s\n",convertscoretotext(listofsheets[k].fullhouse));
-        printf("kleine Straße:  %s\n",convertscoretotext(listofsheets[k].littlestreet));
-        printf("große Straße:   %s\n",convertscoretotext(listofsheets[k].bigstreet));
+        printf("kleine Straße:  %s\n",convertscoretotext(listofsheets[k].smallstraight));
+        printf("große Straße:   %s\n",convertscoretotext(listofsheets[k].bigstraight));
         printf("Kniffel:        %s\n",convertscoretotext(listofsheets[k].kniffel));
         printf("Chance:         %s\n",convertscoretotext(listofsheets[k].chance));
         printf("Gesamtpunktzahl:%d\n",listofsheets[k].totalScore);

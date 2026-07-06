@@ -17,7 +17,7 @@
 #define CHANCE 12
 
 int evalDiceRoll(int* diceThrow, int rollNumber, Sheet sheet) {
-    int currentscore = calculateScoreForEveryField(diceThrow, sheet);
-    
+    int* currentscore = calculateScoreForEveryField(diceThrow, sheet);
+     
     return 0;
 }
