@@ -29,6 +29,7 @@ void turn(Sheet* playersheet) {
     char input[10];
     bool hasenteredpoints = 0;
     printf("Spieler %s\n",playersheet->playername);
+    printf("Spieler %s\n",playersheet->playername);
     printf("Blatt:\n");
     printf("Einser:         %s\n",convertscoretotext(playersheet->ones));
     printf("Zweier:         %s\n",convertscoretotext(playersheet->twos));
@@ -40,8 +41,8 @@ void turn(Sheet* playersheet) {
     printf("Dreierpasch:    %s\n",convertscoretotext(playersheet->threesome));
     printf("Viererpasch:    %s\n",convertscoretotext(playersheet->foursome));
     printf("Full-House:     %s\n",convertscoretotext(playersheet->fullhouse));
-    printf("kleine Straße:  %s\n",convertscoretotext(playersheet->littlestreet));
-    printf("große Straße:   %s\n",convertscoretotext(playersheet->bigstreet));
+    printf("kleine Straße:  %s\n",convertscoretotext(playersheet->smallstraight));
+    printf("große Straße:   %s\n",convertscoretotext(playersheet->bigstraight));
     printf("Kniffel:        %s\n",convertscoretotext(playersheet->kniffel));
     printf("Chance:         %s\n",convertscoretotext(playersheet->chance));
     printf("Punktzahl unten:%d\n",calculatelowerscore(playersheet));
@@ -134,10 +135,10 @@ void enterpoints(int place, int* dicethrow, Sheet* playersheet) {
             playersheet->foursome = checkpointsforturn(place, dicethrow);
             break;
         case LITTLESTREET:
-            playersheet->littlestreet = checkpointsforturn(place, dicethrow);
+            playersheet->smallstraight = checkpointsforturn(place, dicethrow);
             break;
         case BIGSTREET:
-            playersheet->bigstreet = checkpointsforturn(place, dicethrow);
+            playersheet->bigstraight = checkpointsforturn(place, dicethrow);
             break;
         case KNIFFEL:
             playersheet->kniffel = checkpointsforturn(place, dicethrow);
@@ -195,12 +196,12 @@ int checkinput(char* input, Sheet* playersheet) {
         }        
     }
     if(strcmp(input, "kleine Straße")) {
-        if(playersheet->littlestreet == 0) {
+        if(playersheet->smallstraight == 0) {
             return 9;
         }        
     }
     if(strcmp(input, "große Straße")) {
-        if(playersheet->bigstreet == 0) {
+        if(playersheet->bigstraight == 0) {
             return 10;
         }        
     }
@@ -256,11 +257,11 @@ void findemptyrows(Sheet playersheet, int* dicethrow) {
         score = convertscoretotext(checkpointsforturn(FULLHOUSE, dicethrow));
         printf("Full House[fh]: %s\n",score);
     }
-    if(playersheet.littlestreet == 0) {
+    if(playersheet.smallstraight == 0) {
         score = convertscoretotext(checkpointsforturn(LITTLESTREET, dicethrow));
         printf("Kleine Straße[ks]: %s\n",score);
     }
-    if(playersheet.bigstreet == 0) {
+    if(playersheet.bigstraight == 0) {
         score = convertscoretotext(checkpointsforturn(BIGSTREET, dicethrow));
         printf("Große Straße[gs]: %s\n",score);
     }
@@ -306,5 +307,4 @@ Sheet* registerplayers(int* numberofplayers) {
 
     *numberofplayers = numberof;
     return listofsheets;
-
 }

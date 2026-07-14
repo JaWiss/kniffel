@@ -3,8 +3,8 @@
 
 
 typedef struct {
-    char* playername;
-    char* status;
+    char playername[20];
+    char status[8];
     int ones;
     int twos;
     int threes;
@@ -16,8 +16,8 @@ typedef struct {
     int foursome;
     int smallstraight;
     int bigstraight;
-    int chance;
     int kniffel;
+    int chance;
     int totalScore;
 }Sheet;
 

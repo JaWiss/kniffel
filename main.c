@@ -43,6 +43,9 @@ int main(int argc, char *argv[]) {
         printf("Vierer:         %s\n",convertscoretotext(listofsheets[k].fours));
         printf("Fünfer:         %s\n",convertscoretotext(listofsheets[k].fives));
         printf("Sechser:        %s\n",convertscoretotext(listofsheets[k].sixes));
+        printf("-------------------------------------\n");
+        printf("Punktzahl Oben: %d", calculateupperscore(&listofsheets[k]));
+        printf("-------------------------------------\n");
         printf("Dreierpasch:    %s\n",convertscoretotext(listofsheets[k].threesome));
         printf("Viererpasch:    %s\n",convertscoretotext(listofsheets[k].foursome));
         printf("Full-House:     %s\n",convertscoretotext(listofsheets[k].fullhouse));
@@ -50,6 +53,9 @@ int main(int argc, char *argv[]) {
         printf("große Straße:   %s\n",convertscoretotext(listofsheets[k].bigstraight));
         printf("Kniffel:        %s\n",convertscoretotext(listofsheets[k].kniffel));
         printf("Chance:         %s\n",convertscoretotext(listofsheets[k].chance));
+        printf("-------------------------------------\n");
+        printf("Punktzahl Unten:%d", calculatelowerscore(&listofsheets[k]));
+        printf("-------------------------------------\n");
         printf("Gesamtpunktzahl:%d\n",listofsheets[k].totalScore);
     }
 }

@@ -28,26 +28,26 @@ int checkscore(int score) {
     return 0;
 }
 
-int calculatelowerscore(Sheet playersheet) {
+int calculatelowerscore(Sheet* playersheet) {
     int score = 0;
-    score += checkscore(playersheet.threesome);
-    score += checkscore(playersheet.foursome);
-    score += checkscore(playersheet.fullhouse);
-    score += checkscore(playersheet.smallstraight);
-    score += checkscore(playersheet.bigstraight);
-    score += checkscore(playersheet.kniffel);
-    score += checkscore(playersheet.chance);
+    score += checkscore(playersheet->threesome);
+    score += checkscore(playersheet->foursome);
+    score += checkscore(playersheet->fullhouse);
+    score += checkscore(playersheet->smallstraight);
+    score += checkscore(playersheet->bigstraight);
+    score += checkscore(playersheet->kniffel);
+    score += checkscore(playersheet->chance);
     return score;
 }
 
-int calculateupperscore(Sheet playersheet) {
+int calculateupperscore(Sheet* playersheet) {
     int score = 0;
-    score += checkscore(playersheet.ones);
-    score += checkscore(playersheet.twos);
-    score += checkscore(playersheet.threes);
-    score += checkscore(playersheet.fours);
-    score += checkscore(playersheet.fives);
-    score += checkscore(playersheet.sixes);
+    score += checkscore(playersheet->ones);
+    score += checkscore(playersheet->twos);
+    score += checkscore(playersheet->threes);
+    score += checkscore(playersheet->fours);
+    score += checkscore(playersheet->fives);
+    score += checkscore(playersheet->sixes);
     if(score >= 63) {
         score += 35;
     }

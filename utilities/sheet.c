@@ -1,6 +1,9 @@
+#include <string.h>
+#include <stdio.h>
 
 typedef struct {
-    char* playername;
+    char playername[20];
+    char status[8];
     int ones;
     int twos;
     int threes;
@@ -10,16 +13,17 @@ typedef struct {
     int fullhouse;
     int threesome;
     int foursome;
-    int littlestreet;
-    int bigstreet;
+    int smallstraight;
+    int bigstraight;
     int kniffel;
     int chance;
     int totalScore;
 }Sheet;
 
-Sheet createSheet(char* playerName) {
+Sheet createSheet(char* playerName, char* status) {
     Sheet sheet;
-    sheet.playername = playerName;
+    strcpy(sheet.playername, playerName);
+    strcpy(sheet.status, status);
     sheet.ones = 0;
     sheet.twos = 0;
     sheet.threes = 0;
@@ -29,8 +33,8 @@ Sheet createSheet(char* playerName) {
     sheet.threesome = 0;
     sheet.foursome = 0;
     sheet.fullhouse = 0;
-    sheet.littlestreet = 0;
-    sheet.bigstreet = 0;
+    sheet.smallstraight = 0;
+    sheet.bigstraight = 0;
     sheet.kniffel = 0;
     sheet.chance = 0;
     sheet.totalScore = 0;
