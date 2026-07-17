@@ -19,5 +19,9 @@
 int evalDiceRoll(int* diceThrow, int rollNumber, Sheet sheet) {
     int* currentscore = calculateScoreForEveryField(diceThrow, sheet);
      
+
+
+
+    free(currentscore);
     return 0;
 }
