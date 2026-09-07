@@ -57,6 +57,9 @@ void turn(Sheet* playersheet) {
         printf("Dein Wurf:\n");
         printf(" %d, %d, %d, %d, %d\n",dicethrow[0],dicethrow[1],dicethrow[2],dicethrow[3],dicethrow[4]);
         printf("Gebe e ein um eine Zahl einzutragen.\nGebe w ein um erneut zu würfeln.\nGebe s ein um etwas zu streichen.\n");
+        if(strcmp(playersheet->status, "COM") == 0) {
+
+        }
         while(1) {
             scanf("%s", input);
             if(strcmp(input, "e") == 0 || strcmp(input, "w") == 0) {

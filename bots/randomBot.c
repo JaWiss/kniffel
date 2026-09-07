@@ -19,7 +19,7 @@
 #define REROLL 0
 #define ENTER 1
 
-int evalDiceRoll(int* diceThrow, int rollNumber, Sheet sheet) {
+diceRollResult evalDiceRoll(int* diceThrow, int rollNumber, Sheet sheet) {
     srand(time(NULL));
     diceRollResult result;
     if(rollNumber == 3) {
@@ -34,7 +34,7 @@ int evalDiceRoll(int* diceThrow, int rollNumber, Sheet sheet) {
             result.data.dice = rerollRandomDice(diceThrow);
         }
     }
-    return 0;
+    return result;
 }
 
 int chooseRandomMove() {
