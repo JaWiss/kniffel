@@ -1,4 +1,5 @@
 
+#include "../utilities/diceRollResult.h"
 #include "../utilities/sheet.h"
 #include <time.h>
 
@@ -15,16 +16,22 @@
 #define BIGSTRAIGHT 10
 #define KNIFFEL 11
 #define CHANCE 12
+#define REROLL 0
+#define ENTER 1
 
 int evalDiceRoll(int* diceThrow, int rollNumber, Sheet sheet) {
     srand(time(NULL));
+    diceRollResult result;
     if(rollNumber == 3) {
-        int field = enterRandomValues(&sheet);
+        result.status = ENTER;
+        result.data.field = enterRandomValues(&sheet);
     } else {
         if(chooseRandomMove() == 1) {
-            enterRandomValues(&sheet);
+            result.status = ENTER;
+            result.data.field = enterRandomValues(&sheet);
         } else {
-            int* diceToBeRerolled = rerollRandomDice(diceThrow);
+            result.status = ENTER;
+            result.data.dice = rerollRandomDice(diceThrow);
         }
     }
     return 0;
