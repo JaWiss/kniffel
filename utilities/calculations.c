@@ -151,164 +151,181 @@ bool enterpointstosheet(Sheet* playersheet, int* dicethrow) {
     return hasenteredpoints;
 }
 
-
 int checkpointsforturn(int place, int* dicethrow) {
+    printf("A\n");
     int score = 0;
-    switch(place) {
+
+    // Count how often each die value occurs
+    int count[6] = {0};
+
+    printf("B\n");
+    for (int i = 0; i < 5; i++) {
+        printf("ZAHL: %d\n", dicethrow[i]);
+        if (dicethrow[i] >= 1 && dicethrow[i] <= 6) {
+            count[dicethrow[i] - 1]++;
+        }
+    }
+
+    printf("C\n");
+    switch (place) {
+
         case ONE:
-            for(int i = 0; i < 5; i++) {
-                if(dicethrow[i] == 1) {
-                    score+=dicethrow[i];
+            for (int i = 0; i < 5; i++) {
+                if (dicethrow[i] == 1) {
+                    score += dicethrow[i];
                 }
             }
             break;
+
         case TWO:
-            for(int i = 0; i < 5; i++) {
-                if(dicethrow[i] == 2) {
-                    score+=dicethrow[i];
+            for (int i = 0; i < 5; i++) {
+                if (dicethrow[i] == 2) {
+                    score += dicethrow[i];
                 }
             }
             break;
+
         case THREE:
-            for(int i = 0; i < 5; i++) {
-                if(dicethrow[i] == 3) {
-                    score+=dicethrow[i];
+            for (int i = 0; i < 5; i++) {
+                if (dicethrow[i] == 3) {
+                    score += dicethrow[i];
                 }
             }
             break;
+
         case FOUR:
-            for(int i = 0; i < 5; i++) {
-                if(dicethrow[i] == 4) {
-                    score+=dicethrow[i];
+            for (int i = 0; i < 5; i++) {
+                if (dicethrow[i] == 4) {
+                    score += dicethrow[i];
                 }
             }
             break;
+
         case FIVE:
-            for(int i = 0; i < 5; i++) {
-                if(dicethrow[i] == 5) {
-                    score+=dicethrow[i];
+            for (int i = 0; i < 5; i++) {
+                if (dicethrow[i] == 5) {
+                    score += dicethrow[i];
                 }
             }
             break;
+
         case SIX:
-            for(int i = 0; i < 5; i++) {
-                if(dicethrow[i] == 6) {
-                    score+=dicethrow[i];
+            for (int i = 0; i < 5; i++) {
+                if (dicethrow[i] == 6) {
+                    score += dicethrow[i];
                 }
             }
             break;
-        case FULLHOUSE:
-            bool hasthree = 0;
-            bool hastwo = 0;
-            int* timesofoccurence = malloc(sizeof(int)*6);
-            for(int j = 0; j < 6; j++) {
-                timesofoccurence[j] = 0;
-            }
-            for(int i = 0; i < 5; i++) {
-                timesofoccurence[dicethrow[i]-1]+=1;
-            }
-            for(int k = 0; k < 6; k++) {
-                if(timesofoccurence[k] == 3) {
-                    hasthree = 1;
+
+        case FULLHOUSE: {
+            bool hasthree = false;
+            bool hastwo = false;
+
+            for (int i = 0; i < 6; i++) {
+                if (count[i] == 3) {
+                    hasthree = true;
                 }
-                if(timesofoccurence[k] == 2) {
-                    hastwo = 1;
+
+                if (count[i] == 2) {
+                    hastwo = true;
                 }
             }
-            if(hastwo && hasthree) {
+
+            if (hasthree && hastwo) {
                 score = 25;
             }
+
             break;
-        case THREESOME:
-            bool hasthreesome = 0;
-            int* timesofoccurencethree = malloc(sizeof(int)*6);
-            for(int j = 0; j < 6; j++) {
-                timesofoccurencethree[j] = 0;
-            }for(int i = 0; i < 5; i++) {
-                timesofoccurencethree[dicethrow[i]-1]+=1;
-            }
-            for(int k = 0; k < 6; k++) {
-                if(timesofoccurencethree[k] >= 3) {
-                    hasthreesome = 1;
+        }
+
+        case THREESOME: {
+            bool hasthreesome = false;
+
+            for (int i = 0; i < 6; i++) {
+                if (count[i] >= 3) {
+                    hasthreesome = true;
+                    break;
                 }
             }
-            if(hasthreesome) {
-                for(int l = 0; l < 5; l++) {
-                    score += dicethrow[l];
+
+            if (hasthreesome) {
+                for (int i = 0; i < 5; i++) {
+                    score += dicethrow[i];
                 }
             }
+
             break;
-        case FOURSOME:
-            bool hasfoursome = 0;
-            int* timesofoccurencefour = malloc(sizeof(int)*6);
-            for(int j = 0; j < 6; j++) {
-                timesofoccurencefour[j] = 0;
-            }for(int i = 0; i < 5; i++) {
-                timesofoccurencefour[dicethrow[i]-1]+=1;
-            }
-            for(int k = 0; k < 6; k++) {
-                if(timesofoccurencefour[k] >= 4) {
-                    hasfoursome = 1;
+        }
+
+        case FOURSOME: {
+            bool hasfoursome = false;
+
+            for (int i = 0; i < 6; i++) {
+                if (count[i] >= 4) {
+                    hasfoursome = true;
+                    break;
                 }
             }
-            if(hasfoursome) {
-                for(int l = 0; l < 5; l++) {
-                    score += dicethrow[l];
+
+            if (hasfoursome) {
+                for (int i = 0; i < 5; i++) {
+                    score += dicethrow[i];
                 }
             }
+
             break;
-        case SMALLSTRAIGHT:
-            int currentindexlittle = findsmallestnumberindex(dicethrow);
-            int currentstreaklittle = 1;
-            for(int i = 0; i < 4; i++) {
-                for(int j = 0; j < 5; j++) {
-                    if(dicethrow[j] == dicethrow[currentindexlittle] + 1) {
-                        currentindexlittle = j;
-                        currentstreaklittle++;
-                        break;
-                    }
-                }   
-            }
-            if(currentstreaklittle >= 4) {
+        }
+
+        case SMALLSTRAIGHT: {
+            if ((count[0] && count[1] && count[2] && count[3]) ||
+                (count[1] && count[2] && count[3] && count[4]) ||
+                (count[2] && count[3] && count[4] && count[5])) {
+
                 score = 30;
             }
+
             break;
-        case BIGSTRAIGHT:
-            int currentindexbig = findsmallestnumberindex(dicethrow);
-            int currentstreakbig = 1;
-            for(int i = 0; i < 5; i++) {
-                for(int j = 0; j < 5; j++) {
-                    if(dicethrow[j] == dicethrow[currentindexbig] + 1) {
-                        currentindexbig = j;
-                        currentstreakbig++;
-                        break;
-                    }
-                }   
-            }
-            if(currentstreakbig == 5) {
+        }
+
+        case BIGSTRAIGHT: {
+            if ((count[0] && count[1] && count[2] && count[3] && count[4]) ||
+                (count[1] && count[2] && count[3] && count[4] && count[5])) {
+
                 score = 40;
             }
+
             break;
-        case KNIFFEL:
-            for(int i = 1; i < 5; i++) {
-                if(dicethrow[i] != dicethrow[0]) {
+        }
+
+        case KNIFFEL: {
+            score = 50;
+
+            for (int i = 1; i < 5; i++) {
+                if (dicethrow[i] != dicethrow[0]) {
                     score = 0;
                     break;
-                } else {
-                    score = 50;
                 }
             }
+
             break;
+        }
+
         case CHANCE:
-            for(int i = 0; i < 5; i++) {
+            for (int i = 0; i < 5; i++) {
                 score += dicethrow[i];
             }
+            break;
     }
-    if(score == 0) {
+
+    // -1 means that the category was not achieved
+    if (score == 0) {
         score = -1;
     }
+
+    printf("D\n");
     return score;
 }
+
 
 int* calculateScoreForEveryField(int* dicethrow, Sheet sheet) {
     int* scores = malloc(13 * sizeof(int)); 
@@ -376,6 +393,32 @@ int* calculateScoreForEveryField(int* dicethrow, Sheet sheet) {
         scores[CHANCE] = -1;
     } else {
         scores[CHANCE] = checkpointsforturn(CHANCE, dicethrow);
+    }
+    return scores;
+}
+
+int* calculateScoreForEveryOpenField(int* dicethrow, Sheet sheet) {
+    printf("100\n");
+    int* scores = malloc(13 * sizeof(int));
+    printf("200\n");
+
+    scores[ONE]          = (sheet.ones == 0)          ? checkpointsforturn(ONE, dicethrow)          : -1;
+    scores[TWO]          = (sheet.twos == 0)          ? checkpointsforturn(TWO, dicethrow)          : -1;
+    scores[THREE]        = (sheet.threes == 0)        ? checkpointsforturn(THREE, dicethrow)        : -1;
+    scores[FOUR]         = (sheet.fours == 0)         ? checkpointsforturn(FOUR, dicethrow)         : -1;
+    scores[FIVE]         = (sheet.fives == 0)         ? checkpointsforturn(FIVE, dicethrow)         : -1;
+    scores[SIX]          = (sheet.sixes == 0)         ? checkpointsforturn(SIX, dicethrow)          : -1;
+    scores[THREESOME]    = (sheet.threesome == 0)     ? checkpointsforturn(THREESOME, dicethrow)    : -1;
+    scores[FOURSOME]     = (sheet.foursome == 0)      ? checkpointsforturn(FOURSOME, dicethrow)     : -1;
+    scores[FULLHOUSE]    = (sheet.fullhouse == 0)     ? checkpointsforturn(FULLHOUSE, dicethrow)    : -1;
+    scores[SMALLSTRAIGHT] = (sheet.smallstraight == 0) ? checkpointsforturn(SMALLSTRAIGHT, dicethrow) : -1;
+    scores[BIGSTRAIGHT]  = (sheet.bigstraight == 0)   ? checkpointsforturn(BIGSTRAIGHT, dicethrow)  : -1;
+    scores[KNIFFEL]      = (sheet.kniffel == 0)       ? checkpointsforturn(KNIFFEL, dicethrow)      : -1;
+    scores[CHANCE]       = (sheet.chance == 0)        ? checkpointsforturn(CHANCE, dicethrow)       : -1;
+
+    printf("300\n");
+    for(int i = 0; i < 13; i++) {
+        printf("SCORE: %d\n",scores[i]);
     }
     return scores;
 }

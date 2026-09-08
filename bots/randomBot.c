@@ -1,6 +1,8 @@
 
 #include "../utilities/diceRollResult.h"
 #include "../utilities/sheet.h"
+#include "../utilities/calculations.h"
+#include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
 
@@ -17,22 +19,20 @@
 #define BIGSTRAIGHT 10
 #define KNIFFEL 11
 #define CHANCE 12
-#define REROLL 0
-#define ENTER 1
 
 int chooseRandomMove();
-int* rerollRandomDice(int*);
-int enterRandomValues(Sheet*);
+int* rerollRandomDice();
+int enterRandomValues(Sheet, int*);
 
-diceRollResult evalDiceRoll(int* diceThrow, int rollNumber, Sheet sheet) {
+diceRollResult randomBot(Sheet sheet, int rollNumber, int* diceThrow) {
     diceRollResult result;
     if(rollNumber == 3) {
         result.status = ENTER;
-        result.data.field = enterRandomValues(&sheet);
+        result.data.field = enterRandomValues(sheet, diceThrow);
     } else {
         if(chooseRandomMove() == 1) {
             result.status = ENTER;
-            result.data.field = enterRandomValues(&sheet);
+            result.data.field = enterRandomValues(sheet, diceThrow);
         } else {
             result.status = REROLL;
             result.data.dice = rerollRandomDice(diceThrow);
@@ -45,7 +45,7 @@ int chooseRandomMove() {
     return (rand() % 2); 
 }
 
-int* rerollRandomDice(int* diceThrow) {
+int* rerollRandomDice() {
     int* diceToBeRerolled = malloc(5 * sizeof(int));    
     for(int i = 0; i < 5; i++) {
         diceToBeRerolled[i] = (rand() % 2);
@@ -54,6 +54,41 @@ int* rerollRandomDice(int* diceThrow) {
 }
 
 
-int enterRandomValues(Sheet* sheet) {
+int enterRandomValues(Sheet sheet, int* diceThrow) {
 
+    printf("Dice throw: ");
+
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", diceThrow[i]);
+    }
+
+    printf("\n");
+    printf("11\n");
+    int* possibleEntries = calculateScoreForEveryOpenField(diceThrow, sheet);
+    printf("AA: %d\n",possibleEntries[0]);
+    printf("12\n");
+    int* legalEntries = malloc(13*sizeof(int));
+    printf("13\n");
+    int numberOfLegalEntries = 0;
+    for(int i = 0; i < 13;i++) {
+        printf("ENTRY: %d, WERT: %d\n", i, possibleEntries[i]);
+        if(possibleEntries[i] >= 0) {
+            legalEntries[numberOfLegalEntries] = i;
+            numberOfLegalEntries++;
+        }
+    }
+    printf("14\n");
+    if(numberOfLegalEntries == 0) {
+        fprintf(stderr, "Fehler: Keine legalen Felder mehr im Sheet vorhanden.\n");
+        free(legalEntries);
+        free(possibleEntries);
+        exit(EXIT_FAILURE);
+    }
+    printf("15\n");
+    int index = (rand() % numberOfLegalEntries);
+    int entry = legalEntries[index];
+    free(legalEntries);
+    free(possibleEntries);
+    printf("16\n");
+    return entry;
 }

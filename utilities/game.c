@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <diceRollResult.h>
+#include <botRegistry.h>
 
 #include "sheet.h"
 #include "helper.h"
@@ -22,9 +24,45 @@
 #define KNIFFEL 11
 #define CHANCE 12
 
+void rerollSelectedDice(int* dicethrow, const char* diceToReroll, int numDice);
+void enterpoints(int place, int* dicethrow, Sheet* playersheet);
 
-void turn(Sheet* playersheet) {
-    srand(time(NULL));
+void botTurn(Sheet* playersheet) {
+    int* dicethrow = malloc(sizeof(int)*5);
+    bool hasenteredpoints = 0;
+    for(int i = 0; i < 5; i++) {
+        dicethrow[i] = generatedicethrow();
+        printf("WURF: %d\n", dicethrow[i]);
+    }
+    for(int j = 0; j < 2; j++) {
+        if(hasenteredpoints) {
+            break;
+        }
+        char botName[20];
+        printf("2\n");
+        strcpy(botName, playersheet->playername);
+        BotMoveFunc move = findBotByName(botName);
+        printf("3\n");
+        if(move == NULL) {
+            fprintf(stderr, "Fehler: Bot '%s' nicht gefunden.\n", botName);
+            exit(EXIT_FAILURE);
+        }
+        printf("4\n");
+        diceRollResult result = move(*playersheet, j+1, dicethrow);
+        printf("5\n");
+        if(result.status == REROLL) {
+            printf("REROLL\n");
+            rerollSelectedDice(dicethrow, result.data.dice, 5);
+        } else if(result.status == ENTER) {
+            printf("ENTER\n");
+            enterpoints(result.data.field, dicethrow, playersheet);
+            hasenteredpoints = 1;
+        }
+        printf("6\n");
+    }
+}
+
+void humanTurn(Sheet* playersheet) {
     int* dicethrow = malloc(sizeof(int)*5);
     char input[10];
     bool hasenteredpoints = 0;
@@ -57,9 +95,6 @@ void turn(Sheet* playersheet) {
         printf("Dein Wurf:\n");
         printf(" %d, %d, %d, %d, %d\n",dicethrow[0],dicethrow[1],dicethrow[2],dicethrow[3],dicethrow[4]);
         printf("Gebe e ein um eine Zahl einzutragen.\nGebe w ein um erneut zu würfeln.\nGebe s ein um etwas zu streichen.\n");
-        if(strcmp(playersheet->status, "COM") == 0) {
-
-        }
         while(1) {
             scanf("%s", input);
             if(strcmp(input, "e") == 0 || strcmp(input, "w") == 0) {
@@ -78,23 +113,7 @@ void turn(Sheet* playersheet) {
                     break;
                 }
             }
-            for(int i = 0; i < strlen(input); i++) {
-                if(input[i] == '1') {
-                    dicethrow[0] = generatedicethrow();
-                }
-                if(input[i] == '2') {
-                    dicethrow[1] = generatedicethrow();
-                }
-                if(input[i] == '3') {
-                    dicethrow[2] = generatedicethrow();
-                }
-                if(input[i] == '4') {
-                    dicethrow[3] = generatedicethrow();
-                }
-                if(input[i] == '5') {
-                    dicethrow[4] = generatedicethrow();
-                }
-            }
+            rerollSelectedDice(dicethrow, input, 5);
         }
         if(strcmp(input, "e") == 0) {
             hasenteredpoints = enterpointstosheet(playersheet, dicethrow);
@@ -107,6 +126,15 @@ void turn(Sheet* playersheet) {
     }
 }
 
+void rerollSelectedDice(int* dicethrow, const char* diceToReroll, int numDice) {
+    for(int i = 0; i < (int)strlen(diceToReroll); i++) {
+        char c = diceToReroll[i];
+        if(c >= '1' && c <= '0' + numDice) {
+            int index = c - '1';   // '1' -> 0, '2' -> 1, usw.
+            dicethrow[index] = generatedicethrow();
+        }
+    }
+}
 
 void enterpoints(int place, int* dicethrow, Sheet* playersheet) {
     switch(place) {
@@ -294,9 +322,9 @@ Sheet* registerplayers(int* numberofplayers) {
         printf("Soll der Spielier ein Mensch sein? J/N");
         scanf("%s",isAi);
         if(strcmp(isAi, "N") == 0) {
-            strcpy(name, "COM");
-            sprintf(numberOfAisString, "%d", ++numberOfAis);
-            strcat(name, numberOfAisString);
+            strcpy(name, "randomBot");
+            //sprintf(numberOfAisString, "%d", ++numberOfAis);
+            //strcat(name, numberOfAisString);
             strcpy(status, "COM");
         } else {
             printf("Wie soll Spieler %d heißen?\n", i+1);

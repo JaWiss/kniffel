@@ -30,7 +30,13 @@ int main(int argc, char *argv[]) {
     listofsheets = registerplayers(&numberofplayers);
     for(int i = 0; i < 13; i++) {
         for(int j = 0; j < numberofplayers; j++) {
-            turn(&listofsheets[j]);
+            if(strcmp(listofsheets[j].status, "COM") == 0) {
+                printf("1\n");
+                botTurn(&listofsheets[j]);
+                printf("END\n");
+            } else {
+                humanTurn(&listofsheets[j]);
+            }
         }
     }
     for(int k = 0; k < numberofplayers; k++) {
