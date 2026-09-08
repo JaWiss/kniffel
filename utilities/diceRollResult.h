@@ -1,5 +1,5 @@
-#ifndef SHEET_H
-#define SHEET_H
+#ifndef DICEROLLRESULT
+#define DICEROLLRESULT
 
 typedef struct diceRollResult
 {
@@ -8,6 +8,6 @@ typedef struct diceRollResult
             int field;   // gültig wenn status == ENTER
             int* dice;   // gültig wenn status == REROLL
     } data;
-};
+} diceRollResult;
 
 #endif

@@ -2,6 +2,7 @@
 #include "../utilities/diceRollResult.h"
 #include "../utilities/sheet.h"
 #include <time.h>
+#include <stdlib.h>
 
 #define ONE 0
 #define TWO 1
@@ -19,8 +20,11 @@
 #define REROLL 0
 #define ENTER 1
 
+int chooseRandomMove();
+int* rerollRandomDice(int*);
+int enterRandomValues(Sheet*);
+
 diceRollResult evalDiceRoll(int* diceThrow, int rollNumber, Sheet sheet) {
-    srand(time(NULL));
     diceRollResult result;
     if(rollNumber == 3) {
         result.status = ENTER;
@@ -30,7 +34,7 @@ diceRollResult evalDiceRoll(int* diceThrow, int rollNumber, Sheet sheet) {
             result.status = ENTER;
             result.data.field = enterRandomValues(&sheet);
         } else {
-            result.status = ENTER;
+            result.status = REROLL;
             result.data.dice = rerollRandomDice(diceThrow);
         }
     }
