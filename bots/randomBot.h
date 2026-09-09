@@ -5,5 +5,8 @@
 #include "../utilities/sheet.h"
 
 diceRollResult randomBot(Sheet sheet, int rollNumber, int* diceThrow);
+int chooseRandomMove();
+char* rerollRandomDice();
+int enterRandomValues(Sheet, int*);
 
 #endif

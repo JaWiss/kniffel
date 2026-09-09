@@ -305,14 +305,12 @@ Sheet* registerplayers(int* numberofplayers) {
         char name[20];
         char status[6];
         char isAi[2];
-        int numberOfAis = 0;
-        char numberOfAisString[3];
         printf("Soll der Spielier ein Mensch sein? J/N");
         scanf("%s",isAi);
         if(strcmp(isAi, "N") == 0) {
-            strcpy(name, "randomBot");
-            //sprintf(numberOfAisString, "%d", ++numberOfAis);
-            //strcat(name, numberOfAisString);
+            printf("Welchen Bot möchten sie hinzufügen:\n");
+            printBotNames();
+            scanf("%s",name);
             strcpy(status, "COM");
         } else {
             printf("Wie soll Spieler %d heißen?\n", i+1);

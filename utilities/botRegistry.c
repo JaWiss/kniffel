@@ -1,10 +1,14 @@
 #include "botRegistry.h"
 #include <string.h>
 #include <stddef.h>
+#include <stdio.h>
 
 static BotEntry botTable[] = {
-    { "randomBot", randomBot }
+    { "randomBot", randomBot },
+    { "improvedRandomBot", improvedRandomBot }
 };
+
+#define BOT_COUNT (sizeof(botTable) / sizeof(botTable[0]))
 
 BotMoveFunc findBotByName(const char* name) {
     for(int i = 0; i < (int)(sizeof(botTable) / sizeof(botTable[0])); i++) {
@@ -14,3 +18,10 @@ BotMoveFunc findBotByName(const char* name) {
     }
     return NULL;
 }
+
+void printBotNames() {
+    for(int i = 0; i < BOT_COUNT; i++) {
+        printf("%s\n", botTable[i].name);
+    }
+}
+

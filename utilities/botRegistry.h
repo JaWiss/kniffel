@@ -13,7 +13,9 @@ typedef struct {
 
 // Bot-Funktionen, die in der Tabelle registriert werden
 diceRollResult randomBot(Sheet sheet,int rollNumber, int* dice);
+diceRollResult improvedRandomBot(Sheet sheet,int rollNumber, int* dice);
 
 BotMoveFunc findBotByName(const char* name);
+void printBotNames();
 
 #endif
