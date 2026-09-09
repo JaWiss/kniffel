@@ -29,36 +29,24 @@ void enterpoints(int place, int* dicethrow, Sheet* playersheet);
 
 void botTurn(Sheet* playersheet) {
     int* dicethrow = malloc(sizeof(int)*5);
-    bool hasenteredpoints = 0;
     for(int i = 0; i < 5; i++) {
         dicethrow[i] = generatedicethrow();
-        printf("WURF: %d\n", dicethrow[i]);
     }
-    for(int j = 0; j < 2; j++) {
-        if(hasenteredpoints) {
-            break;
-        }
+    for(int j = 0; j < 3; j++) {
         char botName[20];
-        printf("2\n");
         strcpy(botName, playersheet->playername);
         BotMoveFunc move = findBotByName(botName);
-        printf("3\n");
         if(move == NULL) {
             fprintf(stderr, "Fehler: Bot '%s' nicht gefunden.\n", botName);
             exit(EXIT_FAILURE);
         }
-        printf("4\n");
         diceRollResult result = move(*playersheet, j+1, dicethrow);
-        printf("5\n");
         if(result.status == REROLL) {
-            printf("REROLL\n");
             rerollSelectedDice(dicethrow, result.data.dice, 5);
         } else if(result.status == ENTER) {
-            printf("ENTER\n");
             enterpoints(result.data.field, dicethrow, playersheet);
-            hasenteredpoints = 1;
+            return;
         }
-        printf("6\n");
     }
 }
 
@@ -309,7 +297,7 @@ void findemptyrows(Sheet playersheet, int* dicethrow) {
 Sheet* registerplayers(int* numberofplayers) {
     Sheet* listofsheets;
     int numberof;
-    printf("Wie viele Spieler möchtens sie haben?\n");
+    printf("Wie viele Spieler möchten sie haben?\n");
     scanf("%d",&numberof);
     printf("Sie haben %d registriert.\n", numberof);
     listofsheets = malloc(sizeof(Sheet)*numberof);

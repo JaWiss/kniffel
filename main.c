@@ -2,6 +2,7 @@
 #include <argp.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "utilities/sheet.h"
 #include "utilities/calculations.h"
@@ -31,9 +32,7 @@ int main(int argc, char *argv[]) {
     for(int i = 0; i < 13; i++) {
         for(int j = 0; j < numberofplayers; j++) {
             if(strcmp(listofsheets[j].status, "COM") == 0) {
-                printf("1\n");
                 botTurn(&listofsheets[j]);
-                printf("END\n");
             } else {
                 humanTurn(&listofsheets[j]);
             }

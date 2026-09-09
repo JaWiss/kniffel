@@ -152,21 +152,17 @@ bool enterpointstosheet(Sheet* playersheet, int* dicethrow) {
 }
 
 int checkpointsforturn(int place, int* dicethrow) {
-    printf("A\n");
     int score = 0;
 
     // Count how often each die value occurs
     int count[6] = {0};
 
-    printf("B\n");
     for (int i = 0; i < 5; i++) {
-        printf("ZAHL: %d\n", dicethrow[i]);
         if (dicethrow[i] >= 1 && dicethrow[i] <= 6) {
             count[dicethrow[i] - 1]++;
         }
     }
 
-    printf("C\n");
     switch (place) {
 
         case ONE:
@@ -322,7 +318,6 @@ int checkpointsforturn(int place, int* dicethrow) {
         score = -1;
     }
 
-    printf("D\n");
     return score;
 }
 
@@ -398,27 +393,21 @@ int* calculateScoreForEveryField(int* dicethrow, Sheet sheet) {
 }
 
 int* calculateScoreForEveryOpenField(int* dicethrow, Sheet sheet) {
-    printf("100\n");
     int* scores = malloc(13 * sizeof(int));
-    printf("200\n");
 
-    scores[ONE]          = (sheet.ones == 0)          ? checkpointsforturn(ONE, dicethrow)          : -1;
-    scores[TWO]          = (sheet.twos == 0)          ? checkpointsforturn(TWO, dicethrow)          : -1;
-    scores[THREE]        = (sheet.threes == 0)        ? checkpointsforturn(THREE, dicethrow)        : -1;
-    scores[FOUR]         = (sheet.fours == 0)         ? checkpointsforturn(FOUR, dicethrow)         : -1;
-    scores[FIVE]         = (sheet.fives == 0)         ? checkpointsforturn(FIVE, dicethrow)         : -1;
-    scores[SIX]          = (sheet.sixes == 0)         ? checkpointsforturn(SIX, dicethrow)          : -1;
-    scores[THREESOME]    = (sheet.threesome == 0)     ? checkpointsforturn(THREESOME, dicethrow)    : -1;
-    scores[FOURSOME]     = (sheet.foursome == 0)      ? checkpointsforturn(FOURSOME, dicethrow)     : -1;
-    scores[FULLHOUSE]    = (sheet.fullhouse == 0)     ? checkpointsforturn(FULLHOUSE, dicethrow)    : -1;
-    scores[SMALLSTRAIGHT] = (sheet.smallstraight == 0) ? checkpointsforturn(SMALLSTRAIGHT, dicethrow) : -1;
-    scores[BIGSTRAIGHT]  = (sheet.bigstraight == 0)   ? checkpointsforturn(BIGSTRAIGHT, dicethrow)  : -1;
-    scores[KNIFFEL]      = (sheet.kniffel == 0)       ? checkpointsforturn(KNIFFEL, dicethrow)      : -1;
-    scores[CHANCE]       = (sheet.chance == 0)        ? checkpointsforturn(CHANCE, dicethrow)       : -1;
+    scores[ONE]          = (sheet.ones == 0)          ? checkpointsforturn(ONE, dicethrow)          : -2;
+    scores[TWO]          = (sheet.twos == 0)          ? checkpointsforturn(TWO, dicethrow)          : -2;
+    scores[THREE]        = (sheet.threes == 0)        ? checkpointsforturn(THREE, dicethrow)        : -2;
+    scores[FOUR]         = (sheet.fours == 0)         ? checkpointsforturn(FOUR, dicethrow)         : -2;
+    scores[FIVE]         = (sheet.fives == 0)         ? checkpointsforturn(FIVE, dicethrow)         : -2;
+    scores[SIX]          = (sheet.sixes == 0)         ? checkpointsforturn(SIX, dicethrow)          : -2;
+    scores[THREESOME]    = (sheet.threesome == 0)     ? checkpointsforturn(THREESOME, dicethrow)    : -2;
+    scores[FOURSOME]     = (sheet.foursome == 0)      ? checkpointsforturn(FOURSOME, dicethrow)     : -2;
+    scores[FULLHOUSE]    = (sheet.fullhouse == 0)     ? checkpointsforturn(FULLHOUSE, dicethrow)    : -2;
+    scores[SMALLSTRAIGHT]= (sheet.smallstraight == 0) ? checkpointsforturn(SMALLSTRAIGHT, dicethrow): -2;
+    scores[BIGSTRAIGHT]  = (sheet.bigstraight == 0)   ? checkpointsforturn(BIGSTRAIGHT, dicethrow)  : -2;
+    scores[KNIFFEL]      = (sheet.kniffel == 0)       ? checkpointsforturn(KNIFFEL, dicethrow)      : -2;
+    scores[CHANCE]       = (sheet.chance == 0)        ? checkpointsforturn(CHANCE, dicethrow)       : -2;
 
-    printf("300\n");
-    for(int i = 0; i < 13; i++) {
-        printf("SCORE: %d\n",scores[i]);
-    }
     return scores;
 }

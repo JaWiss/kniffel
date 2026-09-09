@@ -8,5 +8,6 @@ void enterpoints(int place, int* dicethrow, Sheet* playersheet);
 int checkinput(char* input, Sheet* playersheet);
 void findemptyrows(Sheet playersheet, int* dicethrow);
 Sheet* registerplayers(int* numberofplayers);
+void botTurn(Sheet* playersheet);
 
 #endif
