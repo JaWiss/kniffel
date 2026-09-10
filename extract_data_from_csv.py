@@ -4,13 +4,33 @@ import pandas as pd
 # Einstellungen
 # ==========================================
 
-INPUT_FILE = "first_run_data.csv"
-OUTPUT_FILE = "averages.csv"
+INPUT_FILE = "second_run_data.csv"
+OUTPUT_FILE = "averages_4.csv"
 
 # Spalten, die zu jedem Spieler gehören
 PLAYER_COLUMNS = [
     "Playername",
     "Playerstatus",
+    "Einser",
+    "Zweier",
+    "Dreier",
+    "Vierer",
+    "Fünfer",
+    "Sechser",
+    "Oben",
+    "Dreierpasch",
+    "Viererpasch",
+    "Full-House",
+    "kleine-Straße",
+    "große-Straße",
+    "Kniffel",
+    "Chance",
+    "Unten",
+    "Total",
+]
+
+# Punktespalten
+SCORE_COLUMNS = [
     "Einser",
     "Zweier",
     "Dreier",
@@ -38,92 +58,122 @@ df = pd.read_csv(INPUT_FILE)
 
 
 # ==========================================
-# Spielerblöcke erkennen
+# Spielerblöcke auslesen
 # ==========================================
-
-# Die ersten beiden Spalten sind date/time.
-# Danach kommen jeweils 18 Spalten pro Spieler.
 
 player_data = []
 
-start_column = 2  # nach date und time
+# date und time stehen am Anfang
+start_column = 2
 
 while start_column < len(df.columns):
 
-    # Spalten des aktuellen Spielerblocks
-    block = df.iloc[:, start_column:start_column + len(PLAYER_COLUMNS)].copy()
+    block = df.iloc[
+        :,
+        start_column:start_column + len(PLAYER_COLUMNS)
+    ].copy()
 
     if len(block.columns) < len(PLAYER_COLUMNS):
         break
 
     block.columns = PLAYER_COLUMNS
-
     player_data.append(block)
 
     start_column += len(PLAYER_COLUMNS)
 
 
 # ==========================================
-# Daten in langes Format umwandeln
+# Alle Spieler zusammenführen
 # ==========================================
 
-all_players = pd.concat(player_data, ignore_index=True)
+all_players = pd.concat(
+    player_data,
+    ignore_index=True
+)
 
 
 # ==========================================
-# Numerische Spalten definieren
+# Werte vorbereiten
 # ==========================================
 
-score_columns = [
-    "Einser",
-    "Zweier",
-    "Dreier",
-    "Vierer",
-    "Fünfer",
-    "Sechser",
-    "Oben",
-    "Dreierpasch",
-    "Viererpasch",
-    "Full-House",
-    "kleine-Straße",
-    "große-Straße",
-    "Kniffel",
-    "Chance",
-    "Unten",
-    "Total",
-]
+for column in SCORE_COLUMNS:
 
-
-# Sicherstellen, dass die Werte numerisch sind
-for column in score_columns:
     all_players[column] = pd.to_numeric(
         all_players[column],
         errors="coerce"
     )
 
     # -1 wird als 0 gewertet
-    all_players.loc[all_players[column] == -1, column] = 0
+    all_players.loc[
+        all_players[column] == -1,
+        column
+    ] = 0
+
 
 # ==========================================
-# Durchschnitt pro Spieler und Kategorie
+# Statistiken berechnen
 # ==========================================
+
+minimums = (
+    all_players
+    .groupby("Playername")[SCORE_COLUMNS]
+    .min()
+)
 
 averages = (
     all_players
-    .groupby("Playername")[score_columns]
+    .groupby("Playername")[SCORE_COLUMNS]
     .mean()
-    .round(2)
+)
+
+maximums = (
+    all_players
+    .groupby("Playername")[SCORE_COLUMNS]
+    .max()
 )
 
 
 # ==========================================
-# Ausgabe
+# Ergebnisse zusammenführen
 # ==========================================
 
-print("\nDurchschnittliche Punktzahlen:")
-print(averages)
+results = []
 
-# Als CSV speichern
-averages.to_csv(OUTPUT_FILE, encoding="utf-8-sig")
+for player in averages.index:
+
+    for column in SCORE_COLUMNS:
+
+        results.append({
+            "Playername": player,
+            "Kategorie": column,
+            "Minimum": minimums.loc[player, column],
+            "Durchschnitt": round(
+                averages.loc[player, column],
+                2
+            ),
+            "Maximum": maximums.loc[player, column],
+        })
+
+
+result_df = pd.DataFrame(results)
+
+
+# ==========================================
+# Ausgabe im Terminal
+# ==========================================
+
+print("\nStatistiken:")
+print(result_df.to_string(index=False))
+
+
+# ==========================================
+# CSV speichern
+# ==========================================
+
+result_df.to_csv(
+    OUTPUT_FILE,
+    index=False,
+    encoding="utf-8-sig"
+)
 
 print(f"\nErgebnis wurde gespeichert als: {OUTPUT_FILE}")

@@ -16,9 +16,9 @@
 #define FOUR 3
 #define FIVE 4
 #define SIX 5
-#define FULLHOUSE 6
-#define THREESOME 7
-#define FOURSOME 8
+#define THREESOME 6
+#define FOURSOME 7
+#define FULLHOUSE 8
 #define SMALLSTRAIGHT 9
 #define BIGSTRAIGHT 10
 #define KNIFFEL 11
@@ -53,7 +53,9 @@ int main(int argc, char *argv[]) {
         listofsheets = registerplayers(&numberofplayers);
     }
     for(int k = 0; k < numberOfIterations; k++) {
-        listofsheets = registerBots();
+        if(botMode) {
+            listofsheets = registerBots();
+        }
         for(int i = 0; i < 13; i++) {
             for(int j = 0; j < numberofplayers; j++) {
                 if(strcmp(listofsheets[j].status, "COM") == 0) {

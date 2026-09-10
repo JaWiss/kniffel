@@ -15,6 +15,7 @@ typedef struct {
 diceRollResult randomBot(Sheet sheet, int rollNumber, int* dice);
 diceRollResult improvedRandomBot(Sheet sheet, int rollNumber, int* dice);
 diceRollResult greedyRandomBot(Sheet sheet, int rollNumber, int* dice);
+diceRollResult baseBot(Sheet sheet, int rollNumber, int* dice);
 
 BotMoveFunc findBotByName(const char* name);
 void printBotNames();

@@ -6,7 +6,8 @@
 static BotEntry botTable[] = {
     { "randomBot", randomBot },
     { "improvedRandomBot", improvedRandomBot },
-    { "greedyRandomBot", greedyRandomBot }
+    { "greedyRandomBot", greedyRandomBot },
+    { "baseBot", baseBot }
 };
 
 #define BOT_COUNT (sizeof(botTable) / sizeof(botTable[0]))

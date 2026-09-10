@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 #include "sheet.h"
 #include "helper.h"
@@ -13,9 +14,9 @@
 #define FOUR 3
 #define FIVE 4
 #define SIX 5
-#define FULLHOUSE 6
-#define THREESOME 7
-#define FOURSOME 8
+#define THREESOME 6
+#define FOURSOME 7
+#define FULLHOUSE 8
 #define SMALLSTRAIGHT 9
 #define BIGSTRAIGHT 10
 #define KNIFFEL 11
@@ -213,27 +214,6 @@ int checkpointsforturn(int place, int* dicethrow) {
             }
             break;
 
-        case FULLHOUSE: {
-            bool hasthree = false;
-            bool hastwo = false;
-
-            for (int i = 0; i < 6; i++) {
-                if (count[i] == 3) {
-                    hasthree = true;
-                }
-
-                if (count[i] == 2) {
-                    hastwo = true;
-                }
-            }
-
-            if (hasthree && hastwo) {
-                score = 25;
-            }
-
-            break;
-        }
-
         case THREESOME: {
             bool hasthreesome = false;
 
@@ -267,6 +247,27 @@ int checkpointsforturn(int place, int* dicethrow) {
                 for (int i = 0; i < 5; i++) {
                     score += dicethrow[i];
                 }
+            }
+
+            break;
+        }
+
+        case FULLHOUSE: {
+            bool hasthree = false;
+            bool hastwo = false;
+
+            for (int i = 0; i < 6; i++) {
+                if (count[i] == 3) {
+                    hasthree = true;
+                }
+
+                if (count[i] == 2) {
+                    hastwo = true;
+                }
+            }
+
+            if (hasthree && hastwo) {
+                score = 25;
             }
 
             break;
@@ -410,4 +411,82 @@ int* calculateScoreForEveryOpenField(int* dicethrow, Sheet sheet) {
     scores[CHANCE]       = (sheet.chance == 0)        ? checkpointsforturn(CHANCE, dicethrow)       : -2;
 
     return scores;
+}
+
+double* baseLikleyhoodLower() {
+    double* likelyhoods = malloc(sizeof(double)*6);
+    likelyhoods[0] = 0.2130;
+    likelyhoods[1] = 0.0201;
+    likelyhoods[2] = 0.0386;
+    likelyhoods[3] = 0.1543;
+    likelyhoods[4] = 0.0309;
+    likelyhoods[5] = 0.00077;
+    return likelyhoods;
+}
+
+double chanceLikelyhood(int score) {
+    int total = 6*6*6*6*6;
+    switch (score)
+    {
+    case 5:
+        return 1.0 / total;
+    case 6:
+        return 5.0 / total;
+    case 7:
+        return 15.0 / total;
+    case 8:
+        return 35.0 / total;
+    case 9:
+        return 70.0 / total;
+    case 10:
+        return 126.0 / total;
+    case 11:
+        return 205.0 / total;
+    case 12:
+        return 305.0 / total;
+    case 13:
+        return 420.0 / total;
+    case 14:
+        return 540.0 / total;
+    case 15:
+        return 651.0 / total;
+    case 16:
+        return 735.0 / total;
+    case 17:
+        return 780.0 / total;
+    case 18:
+        return 780.0 / total;
+    case 19:
+        return 735.0 / total;
+    case 20:
+        return 651.0 / total;
+    case 21:
+        return 540.0 / total;
+    case 22:
+        return 420.0 / total;
+    case 23:
+        return 305.0 / total;
+    case 24:
+        return 205.0 / total;
+    case 25:
+        return 126.0 / total;
+    case 26:
+        return 70.0 / total;
+    case 27:
+        return 35.0 / total;
+    case 28:
+        return 15.0 / total;
+    case 29:
+        return 5.0 / total;
+    case 30:
+        return 1.0 / total;
+    default: 
+        return 0.0000001;
+    }
+}
+
+double upperLikelyHood(int score, int place) {
+    int numberOfDice = score / (place + 1);
+    double likelyhood = pow(6,5-numberOfDice) / (6*6*6*6*6); 
+    return likelyhood;
 }

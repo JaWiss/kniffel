@@ -11,7 +11,10 @@ bool enterpointstosheet(Sheet* playersheet, int* dicethrow);
 int checkpointsforturn(int place, int* dicethrow);
 int calculateupperscore(Sheet* playersheet);
 int calculatelowerscore(Sheet* playersheet);
-int calculateScoreForEveryField(int* dicethrow, Sheet sheet);
+int* calculateScoreForEveryField(int* dicethrow, Sheet sheet);
 int* calculateScoreForEveryOpenField(int* dicethrow, Sheet sheet);
+double* baseLikleyhoodLower();
+double upperLikelyHood(int score, int place);
+double chanceLikelyhood(int score);
 
 #endif

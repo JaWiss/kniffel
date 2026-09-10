@@ -12,7 +12,8 @@ SRC = main.c \
       utilities/botRegistry.c \
       bots/randomBot.c \
       bots/improvedRandomBot.c \
-      bots/greedyRandomBot.c
+      bots/greedyRandomBot.c \
+      bots/baseBot.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -24,7 +25,7 @@ all: $(TARGET)
 
 # Link object files into the executable
 $(TARGET): $(OBJ)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ) -lm
 
 # Compile each .c file into a .o file
 %.o: %.c

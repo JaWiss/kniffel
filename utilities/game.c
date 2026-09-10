@@ -16,9 +16,9 @@
 #define FOUR 3
 #define FIVE 4
 #define SIX 5
-#define FULLHOUSE 6
-#define THREESOME 7
-#define FOURSOME 8
+#define THREESOME 6
+#define FOURSOME 7
+#define FULLHOUSE 8
 #define LITTLESTREET 9
 #define BIGSTREET 10
 #define KNIFFEL 11
@@ -320,7 +320,7 @@ Sheet* registerplayers(int* numberofplayers) {
         listofsheets[i] = createSheet(name, status);
         printf("Spieler %s wurde registriert.\n", listofsheets[i].playername);
     }
-    printf("Es wurden %d Spieler registriert\n", numberof);    
+    printf("Es wurde(n) %d Spieler registriert\n", numberof);    
 
     *numberofplayers = numberof;
     return listofsheets;
