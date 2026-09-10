@@ -11,7 +11,8 @@ SRC = main.c \
       utilities/diceRollResult.c \
       utilities/botRegistry.c \
       bots/randomBot.c \
-      bots/improvedRandomBot.c
+      bots/improvedRandomBot.c \
+      bots/greedyRandomBot.c
 
 OBJ = $(SRC:.c=.o)
 

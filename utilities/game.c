@@ -325,3 +325,17 @@ Sheet* registerplayers(int* numberofplayers) {
     *numberofplayers = numberof;
     return listofsheets;
 }
+
+Sheet* registerBots() {
+    Sheet* listofsheets;
+    listofsheets = malloc(sizeof(Sheet)*numberOfBots());
+    int numberofBots = numberOfBots();
+    for(int i = 0; i < numberofBots; i++) {
+        char name[20];
+        char status[6];
+        strcpy(name, getBotNameAtIndex(i));
+        strcpy(status, "COM");
+        listofsheets[i] = createSheet(name, status);
+    }
+    return listofsheets;
+}

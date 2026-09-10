@@ -9,5 +9,6 @@ int checkinput(char* input, Sheet* playersheet);
 void findemptyrows(Sheet playersheet, int* dicethrow);
 Sheet* registerplayers(int* numberofplayers);
 void botTurn(Sheet* playersheet);
+Sheet* registerBots();
 
 #endif

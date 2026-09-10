@@ -1,2 +1,6 @@
 main.o
 kniffel*
+first_run_data.csv
+/.venv
+averages.csv
+*.o

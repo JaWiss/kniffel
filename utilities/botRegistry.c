@@ -5,7 +5,8 @@
 
 static BotEntry botTable[] = {
     { "randomBot", randomBot },
-    { "improvedRandomBot", improvedRandomBot }
+    { "improvedRandomBot", improvedRandomBot },
+    { "greedyRandomBot", greedyRandomBot }
 };
 
 #define BOT_COUNT (sizeof(botTable) / sizeof(botTable[0]))
@@ -25,3 +26,10 @@ void printBotNames() {
     }
 }
 
+int numberOfBots() {
+    return BOT_COUNT;
+}
+
+char* getBotNameAtIndex(int index) {
+    return botTable[index].name;
+}
