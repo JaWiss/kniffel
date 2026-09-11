@@ -19,8 +19,8 @@
 #define THREESOME 6
 #define FOURSOME 7
 #define FULLHOUSE 8
-#define LITTLESTREET 9
-#define BIGSTREET 10
+#define SMALLSTRAIGHT 9
+#define BIGSTRAIGHT 10
 #define KNIFFEL 11
 #define CHANCE 12
 
@@ -153,10 +153,10 @@ void enterpoints(int place, int* dicethrow, Sheet* playersheet) {
         case FOURSOME:
             playersheet->foursome = checkpointsforturn(place, dicethrow);
             break;
-        case LITTLESTREET:
+        case SMALLSTRAIGHT:
             playersheet->smallstraight = checkpointsforturn(place, dicethrow);
             break;
-        case BIGSTREET:
+        case BIGSTRAIGHT:
             playersheet->bigstraight = checkpointsforturn(place, dicethrow);
             break;
         case KNIFFEL:
@@ -277,11 +277,11 @@ void findemptyrows(Sheet playersheet, int* dicethrow) {
         printf("Full House[fh]: %s\n",score);
     }
     if(playersheet.smallstraight == 0) {
-        score = convertscoretotext(checkpointsforturn(LITTLESTREET, dicethrow));
+        score = convertscoretotext(checkpointsforturn(SMALLSTRAIGHT, dicethrow));
         printf("Kleine Straße[ks]: %s\n",score);
     }
     if(playersheet.bigstraight == 0) {
-        score = convertscoretotext(checkpointsforturn(BIGSTREET, dicethrow));
+        score = convertscoretotext(checkpointsforturn(BIGSTRAIGHT, dicethrow));
         printf("Große Straße[gs]: %s\n",score);
     }
     if(playersheet.kniffel == 0) {

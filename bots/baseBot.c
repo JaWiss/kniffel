@@ -40,7 +40,7 @@ diceRollResult baseBot(Sheet sheet, int rollNumber, int* diceThrow) {
         }
     }
     currentScorePerLikelyhood[CHANCE] = currentscore[CHANCE] / (chanceLikelyhood(currentscore[CHANCE]) * 10);
-    double bestFieldScore = 0.0;
+    double bestFieldScore = -100000.0;
     int bestFieldIndex = 0;
     /*for(int l = 0; l < 5; l++) {
         printf("%d, ", diceThrow[l]);
@@ -62,6 +62,7 @@ diceRollResult baseBot(Sheet sheet, int rollNumber, int* diceThrow) {
             bestFieldIndex = k;
         }
     }
+
     result.status = ENTER;
     result.data.field = legalEntries[bestFieldIndex];
     //printf("CHOSEN FIELD :%d\n", result.data.field);
@@ -70,4 +71,40 @@ diceRollResult baseBot(Sheet sheet, int rollNumber, int* diceThrow) {
     free(currentScorePerLikelyhood);
     free(lowerBaseLikelyhoods);
     return result;
+}
+
+double* likelyhoodOfImprovementLower(int* diceRoll) {
+    double* likelyhoods = malloc(7*sizeof(double));
+    int count[6] = {0};
+    int highestCount = 0;
+
+    for (int i = 0; i < 5; i++) {
+        if (diceRoll[i] >= 1 && diceRoll[i] <= 6) {
+            count[diceRoll[i] - 1]++;
+        }
+    }
+    for(int j = 0; j < 6; j++) {
+        if(count[j] > highestCount) {
+            highestCount = count[j];
+        }
+    }
+    //Dreierpasch
+    if(highestCount >= 3) {
+        likelyhoods[0] = 0.0;
+    } else if(highestCount == 2) {
+        likelyhoods[0] = 1 - 125 / 216;
+    } else {
+        likelyhoods[0] = 0.1319;
+    }
+    //Viererpasch
+    if(highestCount >= 4) {
+        likelyhoods[0] = 0.0;
+    } else if(highestCount == 3) {
+        likelyhoods[0] = 1 - 25 / 36;
+    } else if(highestCount == 2) {
+        likelyhoods[0] = 1 - 200 / 216; 
+    } else {
+        likelyhoods[0] = 21/1296;
+    }
+
 }
