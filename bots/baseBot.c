@@ -77,17 +77,26 @@ double* likelyhoodOfImprovementLower(int* diceRoll) {
     double* likelyhoods = malloc(7*sizeof(double));
     int count[6] = {0};
     int highestCount = 0;
+    int numberOfdoubles = 0;
 
     for (int i = 0; i < 5; i++) {
         if (diceRoll[i] >= 1 && diceRoll[i] <= 6) {
             count[diceRoll[i] - 1]++;
         }
     }
+
     for(int j = 0; j < 6; j++) {
         if(count[j] > highestCount) {
             highestCount = count[j];
         }
     }
+
+    for(int fullHouseIndex = 0; fullHouseIndex < 6; fullHouseIndex++) {
+        if(count[fullHouseIndex] == 2) {
+            numberOfdoubles++;
+        }
+    }
+
     //Dreierpasch
     if(highestCount >= 3) {
         likelyhoods[0] = 0.0;
@@ -98,13 +107,33 @@ double* likelyhoodOfImprovementLower(int* diceRoll) {
     }
     //Viererpasch
     if(highestCount >= 4) {
-        likelyhoods[0] = 0.0;
+        likelyhoods[1] = 0.0;
     } else if(highestCount == 3) {
-        likelyhoods[0] = 1 - 25 / 36;
+        likelyhoods[1] = 1 - 25 / 36;
     } else if(highestCount == 2) {
-        likelyhoods[0] = 1 - 200 / 216; 
+        likelyhoods[1] = 1 - 200 / 216; 
     } else {
-        likelyhoods[0] = 21/1296;
+        likelyhoods[1] = 21/1296;
     }
-
+    //Full-House
+    if(highestCount == 1) {
+        likelyhoods[2] = 0.0386;
+    } else if(highestCount == 2) {
+        if(numberOfdoubles == 2) {
+            likelyhoods[2] == 0.33333;
+        } else if(numberOfdoubles == 1) {
+            likelyhoods[2] == 5/54;
+        }
+    } else if (highestCount == 3) {
+        if(numberOfdoubles = 1) {
+            likelyhoods[2] = 0;
+        } else if(numberOfdoubles = 0) {
+            likelyhoods[2] = 0.16666;
+        }
+    } else if(highestCount == 4) {
+        likelyhoods[2] = 0.16666;
+    } else if(highestCount == 5) {
+        likelyhoods[2] = 5/36;
+    }
+    
 }
