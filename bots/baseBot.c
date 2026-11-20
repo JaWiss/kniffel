@@ -77,8 +77,30 @@ diceRollResult baseBot(Sheet sheet, int rollNumber, int* diceThrow) {
     return result;
 }
 
-void scorePerLikelyHoodUpper(int* diceRoll, double* likelyhoodOfImprovement, double* res) {
+void scorePerLikelyHoodLower(int* diceRoll, double* likelyhoodOfImprovement, double* res) {
+}
 
+double scorePerLikelyHoodThreesome(int* diceRoll, double likelyhoodOfImprovement) {
+    int count[6] = {0};
+    int highestCount = 0;
+    int numberOfdoubles = 0;
+    int doubles[2] = {-1};
+
+    for (int i = 0; i < 5; i++) {
+        if (diceRoll[i] >= 1 && diceRoll[i] <= 6) count[diceRoll[i] - 1]++;
+    }
+    for (int j = 0; j < 6; j++) {
+        if (count[j] > highestCount) highestCount = count[j];
+        if (count[j] == 2)  {
+            doubles[numberOfdoubles++] = j + 1;
+        }
+    }
+    if(highestCount > 3) {
+        return (double) diceRoll[0] +(double) diceRoll[1] +(double) diceRoll[2] +(double) diceRoll[3] +(double) diceRoll[4];
+    }
+    else if(highestCount == 2 && numberOfdoubles == 1) {
+        return (double) (doubles[0] * 3) + 7.0;
+    }
 }
 
 void scorePerLikelyHoodUpper(int* diceRoll, double* res) {

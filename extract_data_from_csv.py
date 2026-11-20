@@ -5,7 +5,7 @@ import pandas as pd
 # ==========================================
 
 INPUT_FILE = "second_run_data.csv"
-OUTPUT_FILE = "averages_4.csv"
+OUTPUT_FILE = "averages_5.csv"
 
 # Spalten, die zu jedem Spieler gehören
 PLAYER_COLUMNS = [

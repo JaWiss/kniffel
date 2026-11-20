@@ -13,9 +13,9 @@
 #define FOUR 3
 #define FIVE 4
 #define SIX 5
-#define FULLHOUSE 6
-#define THREESOME 7
-#define FOURSOME 8
+#define THREESOME 6
+#define FOURSOME 7
+#define FULLHOUSE 8
 #define SMALLSTRAIGHT 9
 #define BIGSTRAIGHT 10
 #define KNIFFEL 11
