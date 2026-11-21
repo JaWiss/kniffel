@@ -20,6 +20,12 @@
 #define KNIFFEL 11
 #define CHANCE 12
 
+double* likelyhoodOfImprovementLower(int* diceRoll);
+double scorePerLikelyHoodFoursome(int* diceRoll, double likelyhoodOfImprovement);
+double scorePerLikelyHoodThreesome(int* diceRoll, double likelyhoodOfImprovement);
+double pow(int base, int exponent);
+double fak(int base);
+
 diceRollResult baseBot(Sheet sheet, int rollNumber, int* diceThrow) {
     diceRollResult result;
     double* currentScorePerLikelyhood = malloc(sizeof(double)*13);
@@ -43,9 +49,9 @@ diceRollResult baseBot(Sheet sheet, int rollNumber, int* diceThrow) {
     currentScorePerLikelyhood[CHANCE] = currentscore[CHANCE] / (chanceLikelyhood(currentscore[CHANCE]) * 10);
     double bestFieldScore = -100000.0;
     int bestFieldIndex = 0;
-    /*for(int l = 0; l < 5; l++) {
+    for(int l = 0; l < 5; l++) {
         printf("%d, ", diceThrow[l]);
-    }*/
+    }
     int* legalEntries = malloc(13*sizeof(int));
     int numberOfLegalEntries = 0;
     int* possibleEntries = calculateScoreForEveryOpenField(diceThrow, sheet);
@@ -67,6 +73,11 @@ diceRollResult baseBot(Sheet sheet, int rollNumber, int* diceThrow) {
     double* likelyhoodsOfImprovementLower  = likelyhoodOfImprovementLower(diceThrow);
     scorePerLikelyHoodUpper(diceThrow, scoreByLikleyhoodOfImprovment);
     scorePerLikelyHoodLower(diceThrow, likelyhoodsOfImprovementLower,scoreByLikleyhoodOfImprovment);
+    printf("\n------------------\n");
+    for(int z = 0; z < 13; z++) {
+        printf("%d - %f - %f\n",z+1, scoreByLikleyhoodOfImprovment[z], currentScorePerLikelyhood[z]);
+    }
+    printf("------------------\n");
     result.status = ENTER;
     result.data.field = legalEntries[bestFieldIndex];
     //printf("CHOSEN FIELD :%d\n", result.data.field);
@@ -86,6 +97,61 @@ void scorePerLikelyHoodLower(int* diceRoll, double* likelyhoodOfImprovement, dou
     res[10] = 40.0 / likelyhoodOfImprovement[4];
     res[11] = 50.0 / likelyhoodOfImprovement[5];
     res[12] = 0.0;
+}
+
+bool* chooseDiceToReroll(int* diceRoll, int place) {
+    bool* diceToReThrow[5] = {0};
+    switch (place)
+    {
+    case ONE:
+        for(int i = 0; i < 5; i++) {
+            if(diceRoll[i] != 1) diceToReThrow[i] = 1;
+        }
+        break;
+    case TWO:
+        for(int i = 0; i < 5; i++) {
+            if(diceRoll[i] != 2) diceToReThrow[i] = 1;
+        }
+        break;
+    case THREE:
+        for(int i = 0; i < 5; i++) {
+            if(diceRoll[i] != 3) diceToReThrow[i] = 1;
+        }
+        break;
+    case FOUR:
+        for(int i = 0; i < 5; i++) {
+            if(diceRoll[i] != 4) diceToReThrow[i] = 1;
+        }
+        break;
+    case FIVE:
+        for(int i = 0; i < 5; i++) {
+            if(diceRoll[i] != 5) diceToReThrow[i] = 1;
+        }
+        break;
+    case SIX:
+        for(int i = 0; i < 5; i++) {
+            if(diceRoll[i] != 6) diceToReThrow[i] = 1;
+        }
+        break;
+    case THREESOME:
+
+        break;
+    case FOURSOME:
+        break;
+    
+    case FULLHOUSE:
+        break;
+    case SMALLSTRAIGHT:
+        break;
+    case BIGSTRAIGHT:
+        break;
+    case KNIFFEL:
+        break;
+    case CHANCE:
+        break;
+    default:
+        break;
+    }
 }
 
 double scorePerLikelyHoodFoursome(int* diceRoll, double likelyhoodOfImprovement) {
@@ -172,36 +238,38 @@ void scorePerLikelyHoodUpper(int* diceRoll, double* res) {
     for(int i = 0; i < 6; i++) {
         int possibleAdditionRolls = 5 - numberOfOccurences(diceRoll, i + 1);
         double score = 0.0;
+        double points = 0.0;
         for(int j = 1; j <= possibleAdditionRolls; j++) {
             double likelyHood = 0.0;
             if( possibleAdditionRolls > j) {
                 likelyHood = (fak(possibleAdditionRolls) / (fak(possibleAdditionRolls - j) * fak(j))) * pow(5, possibleAdditionRolls - j) / pow(6,possibleAdditionRolls);
             } else {
-                likelyHood = 1 / pow(6, possibleAdditionRolls);
+                likelyHood = 1.0 / (double) pow(6, possibleAdditionRolls);
             }
             double points = j * (i+1);
             points += (points/63) * 35;
             score += points / likelyHood;
         } 
         res[i] = score;
+
     }
 }
 
-int pow(int base, int exponent) {
+double pow(int base, int exponent) {
     int score = 1;
     for(int i = 0; i < exponent; i++) {
         score = base * score; 
     }    
-    return score;
+    return (double) score;
 }
 
-int fak(int base) {
+double fak(int base) {
     int result = 1;
     while(base > 0) {
         result = result * base;
         base--;
     }
-    return result;
+    return (double) result;
 }
 
 int numberOfOccurences(int* diceRoll, int number) {
