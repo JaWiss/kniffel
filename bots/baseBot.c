@@ -66,6 +66,7 @@ diceRollResult baseBot(Sheet sheet, int rollNumber, int* diceThrow) {
 
     double* likelyhoodsOfImprovementLower  = likelyhoodOfImprovementLower(diceThrow);
     scorePerLikelyHoodUpper(diceThrow, scoreByLikleyhoodOfImprovment);
+    scorePerLikelyHoodLower(diceThrow, likelyhoodsOfImprovementLower,scoreByLikleyhoodOfImprovment);
     result.status = ENTER;
     result.data.field = legalEntries[bestFieldIndex];
     //printf("CHOSEN FIELD :%d\n", result.data.field);
@@ -78,16 +79,73 @@ diceRollResult baseBot(Sheet sheet, int rollNumber, int* diceThrow) {
 }
 
 void scorePerLikelyHoodLower(int* diceRoll, double* likelyhoodOfImprovement, double* res) {
+    res[6] = scorePerLikelyHoodThreesome(diceRoll, likelyhoodOfImprovement[0]);
+    res[7] = scorePerLikelyHoodFoursome(diceRoll, likelyhoodOfImprovement[1]);
+    res[8] = 25.0 / likelyhoodOfImprovement[2];
+    res[9] = 30.0 / likelyhoodOfImprovement[3];
+    res[10] = 40.0 / likelyhoodOfImprovement[4];
+    res[11] = 50.0 / likelyhoodOfImprovement[5];
+    res[12] = 0.0;
 }
 
-double scorePerLikelyHoodThreesome(int* diceRoll, double likelyhoodOfImprovement) {
+double scorePerLikelyHoodFoursome(int* diceRoll, double likelyhoodOfImprovement) {
+    if(likelyhoodOfImprovement == 0.0) {
+        return 0.0;
+    }
     int count[6] = {0};
     int highestCount = 0;
     int numberOfdoubles = 0;
     int doubles[2] = {-1};
+    int triple = -1;
+    int highestNumber = -1;
+
+    double score = 0.0;
 
     for (int i = 0; i < 5; i++) {
         if (diceRoll[i] >= 1 && diceRoll[i] <= 6) count[diceRoll[i] - 1]++;
+        if(diceRoll[i] > highestNumber) highestNumber = diceRoll[i];
+    }
+    for (int j = 0; j < 6; j++) {
+        if (count[j] > highestCount) highestCount = count[j];
+        if (count[j] == 2)  {
+            doubles[numberOfdoubles++] = j + 1;
+        }
+        if(count[j] == 3) {
+            triple = j +1;
+        }
+    }
+    if(highestCount == 3) {
+        score = (double) (triple * 4) + 3.5;
+    } else if(highestCount == 2 && numberOfdoubles == 1) {
+        score = (double) (doubles[0] * 4) + 3.5;
+    } else if(highestCount == 2 && numberOfdoubles == 2) {
+        if(doubles[0] > doubles[1]) {
+            score = (double) (doubles[0] * 4) + 3.5;
+        } else {
+            score = (double) (doubles[1] * 4) + 3.5;
+        }
+    } else {
+        // Jede Zahl nur einzeln
+        score = (double) highestNumber * 4 + 3.5;
+    }
+    return score / likelyhoodOfImprovement;
+}
+
+double scorePerLikelyHoodThreesome(int* diceRoll, double likelyhoodOfImprovement) {
+    if(likelyhoodOfImprovement == 0.0) {
+        return 0.0;
+    }
+    int count[6] = {0};
+    int highestCount = 0;
+    int numberOfdoubles = 0;
+    int doubles[2] = {-1};
+    int highestNumber = -1;
+
+    double score = 0.0;
+
+    for (int i = 0; i < 5; i++) {
+        if (diceRoll[i] >= 1 && diceRoll[i] <= 6) count[diceRoll[i] - 1]++;
+        if(diceRoll[i] > highestNumber) highestNumber = diceRoll[i];
     }
     for (int j = 0; j < 6; j++) {
         if (count[j] > highestCount) highestCount = count[j];
@@ -95,12 +153,19 @@ double scorePerLikelyHoodThreesome(int* diceRoll, double likelyhoodOfImprovement
             doubles[numberOfdoubles++] = j + 1;
         }
     }
-    if(highestCount > 3) {
-        return (double) diceRoll[0] +(double) diceRoll[1] +(double) diceRoll[2] +(double) diceRoll[3] +(double) diceRoll[4];
+    if(highestCount == 2 && numberOfdoubles == 1) {
+        score = (double) (doubles[0] * 3) + 7.0;
+    } else if(highestCount == 2 && numberOfdoubles == 2) {
+        if(doubles[0] > doubles[1]) {
+            score = (double) (doubles[0] * 3) + 7.0;
+        } else {
+            score = (double) (doubles[1] * 3) + 7.0;
+        }
+    } else {
+        // Jede Zahl nur einzeln
+        score = (double) highestNumber * 3 + 7.0;
     }
-    else if(highestCount == 2 && numberOfdoubles == 1) {
-        return (double) (doubles[0] * 3) + 7.0;
-    }
+    return score / likelyhoodOfImprovement;
 }
 
 void scorePerLikelyHoodUpper(int* diceRoll, double* res) {
